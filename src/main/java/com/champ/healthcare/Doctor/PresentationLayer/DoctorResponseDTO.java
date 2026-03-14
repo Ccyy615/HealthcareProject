@@ -1,20 +1,24 @@
 package com.champ.healthcare.Doctor.PresentationLayer;
 
+import com.champ.healthcare.Doctor.Domain.Speciality;
+import com.champ.healthcare.Doctor.Domain.WorkZone;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class DoctorResponseDTO {
 
-
-    private UUID doctorId;
-    private String doctor_FullName;
-    private boolean doctor_IsActive;
-    private LocalTime doctor_StartTime;
+    private String doctorId;
+    private String doctorFirstName;
+    private String doctorLastName;
+    private Boolean isActive;
+    private Boolean isValid;
+    private List<Speciality> speciality;
+    private WorkZone workZone;
 }

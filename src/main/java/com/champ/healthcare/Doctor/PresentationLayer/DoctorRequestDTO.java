@@ -1,7 +1,12 @@
 package com.champ.healthcare.Doctor.PresentationLayer;
 
 import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
+import com.champ.healthcare.Doctor.Domain.Speciality;
+import com.champ.healthcare.Doctor.Domain.WorkZone;
 import lombok.*;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
 import java.util.*;
@@ -9,12 +14,19 @@ import java.util.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class DoctorRequestDTO {
 
-    private UUID doctorId;
-    private String doctor_FullName;
-    private boolean doctor_IsActive;
-    private LocalTime doctor_StartTime;
+
+    @NotBlank(message = "First name is required")
+    private String doctorFirstName;
+
+    @NotBlank(message = "Last name is required")
+    private String doctorLastName;
+
+    @NotNull(message = "Work zone is required")
+    private WorkZone workZone;
+
+    private List<Speciality> speciality;
+
+
 }
