@@ -15,7 +15,6 @@ import lombok.Setter;
 public class WorkZone {
     private String city;
     private String province;
-    private Integer maxTravelDistance; // in kilometers
 
     public void validate() {
         if (city == null || city.trim().isEmpty()) {
@@ -23,9 +22,6 @@ public class WorkZone {
         }
         if (province == null || province.trim().isEmpty()) {
             throw new IllegalArgumentException("Province is required");
-        }
-        if (maxTravelDistance == null || maxTravelDistance <= 0) {
-            throw new IllegalArgumentException("Max travel distance must be positive");
         }
     }
 }

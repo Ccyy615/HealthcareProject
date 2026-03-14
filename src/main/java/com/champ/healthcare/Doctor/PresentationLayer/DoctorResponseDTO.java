@@ -1,7 +1,6 @@
 package com.champ.healthcare.Doctor.PresentationLayer;
 
-import com.champ.healthcare.Doctor.Domain.Speciality;
-import com.champ.healthcare.Doctor.Domain.WorkZone;
+import com.champ.healthcare.Doctor.Domain.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -21,4 +20,6 @@ public class DoctorResponseDTO {
     private Boolean isValid;
     private List<Speciality> speciality;
     private WorkZone workZone;
+    private License license;
+
 }

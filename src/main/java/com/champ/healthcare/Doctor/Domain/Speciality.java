@@ -21,10 +21,10 @@ public class Speciality {
 
     public void validate() {
         if (speciality == null || speciality.trim().isEmpty()) {
-            throw new IllegalArgumentException("speciality type is required");
+            throw new IllegalArgumentException("speciality type is required.");
         }
         if (proficiencyLevel == null) {
-            throw new IllegalArgumentException("Proficiency level is required");
+            throw new IllegalArgumentException("Proficiency level is required.");
         }
     }
 

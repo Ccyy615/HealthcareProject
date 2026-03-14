@@ -4,6 +4,7 @@ import com.champ.healthcare.utilities.DoctorNotEligibleException;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,19 +34,19 @@ public class Doctor {
     @Column(nullable = false)
     private Boolean isValid;
 
-    @Column(nullable = false)
-    private String licenseNumber;
-
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "city", column = @Column(name = "work_zone_city")),
-            @AttributeOverride(name = "province", column = @Column(name = "work_zone_province")),
-            @AttributeOverride(name = "maxTravelDistance", column = @Column(name = "max_travel_distance"))
+            @AttributeOverride(name = "province", column = @Column(name = "work_zone_province"))
     })
     private WorkZone workZone;
+
     @ElementCollection
     @CollectionTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "doctor_fk"))
     private List<Speciality> speciality;
+
+    @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private License license;
 
 
 //    /**
@@ -57,7 +58,13 @@ public class Doctor {
 
         if (!hasVerifiedSkill()) {
             throw new DoctorNotEligibleException(
-                    "Cannot activate Doctor: No verified speciality found. "
+                    "Cannot activate Doctor: No verified speciality found."
+            );
+        }
+
+        if (!hasValidLicense()) {
+            throw new DoctorNotEligibleException(
+                    "Cannot activate handyman: No valid license found. "
             );
         }
         this.isActive = true;
@@ -73,7 +80,7 @@ public class Doctor {
 
     public void unverify() {
         this.isValid = false;
-        this.isActive = false; // If unverified, must also be inactive
+        this.isActive = false;
     }
 
     public void addSpeciality(Speciality specialitySet) {
@@ -94,9 +101,24 @@ public class Doctor {
         this.workZone = newWorkZone;
     }
 
+    public void setLicense(License license) {
+        this.license = license;
+
+        if (license != null) {
+            license.setDoctor(this);
+        }
+    }
+
+
+
     private boolean hasVerifiedSkill() {
         return speciality.stream().anyMatch(Speciality::isVerified);
     }
+
+    public boolean hasValidLicense() {
+        return license != null && license.isValid();
+    }
+
 
 
 

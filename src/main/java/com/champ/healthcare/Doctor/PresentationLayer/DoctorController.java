@@ -91,6 +91,14 @@ public class DoctorController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/{doctorId}/license")
+    public ResponseEntity<DoctorResponseDTO> addLicense(
+            @PathVariable String doctorId,
+            @Valid @RequestBody LicenseRequestDTO requestDTO) {
+        DoctorResponseDTO response = doctorService.addLicense(doctorId, requestDTO);
+        return ResponseEntity.ok(response);
+    }
+
 
     @DeleteMapping("/{handymanId}")
     public ResponseEntity<Void> deleteDoctor(@PathVariable String doctorId) {

@@ -13,8 +13,7 @@ public class DoctorMapper {
     public Doctor toEntity(DoctorRequestDTO doctorRequestDTO) {
         WorkZone workZone = new WorkZone(
                 doctorRequestDTO.getWorkZone().getCity(),
-                doctorRequestDTO.getWorkZone().getProvince(),
-                doctorRequestDTO.getWorkZone().getMaxTravelDistance()
+                doctorRequestDTO.getWorkZone().getProvince()
         );
 
         var speciality = doctorRequestDTO.getSpeciality() != null
@@ -29,6 +28,9 @@ public class DoctorMapper {
                 .doctorLastName(doctorRequestDTO.getDoctorLastName())
                 .workZone(workZone)
                 .speciality(speciality)
+                .isActive(true)
+                .isValid(true)
+                .license(null)
                 .build();
 
     }
@@ -45,7 +47,6 @@ public class DoctorMapper {
             WorkZone workZoneDTO = new WorkZone();
             workZoneDTO.setCity(entity.getWorkZone().getCity());
             workZoneDTO.setProvince(entity.getWorkZone().getProvince());
-            workZoneDTO.setMaxTravelDistance(entity.getWorkZone().getMaxTravelDistance());
             doctorResponseDTO.setWorkZone(workZoneDTO);
         }
 
@@ -59,6 +60,18 @@ public class DoctorMapper {
                     })
                     .collect(Collectors.toList());
             doctorResponseDTO.setSpeciality(specialityDTO);
+        }
+
+        if (entity.getLicense() != null) {
+            License licenseDTO = new License();
+
+            licenseDTO.setLicenseId(entity.getLicense().getLicenseId());
+            licenseDTO.setLicenseName(entity.getLicense().getLicenseName());
+            licenseDTO.setStatus(entity.getLicense().getStatus());
+            licenseDTO.setPerformedDate(entity.getLicense().getPerformedDate());
+            licenseDTO.setExpiryDate(entity.getLicense().getExpiryDate());
+
+            doctorResponseDTO.setLicense(licenseDTO);
         }
 
         return doctorResponseDTO;

@@ -16,7 +16,6 @@ import java.util.*;
 @NoArgsConstructor
 public class DoctorRequestDTO {
 
-
     @NotBlank(message = "First name is required")
     private String doctorFirstName;
 

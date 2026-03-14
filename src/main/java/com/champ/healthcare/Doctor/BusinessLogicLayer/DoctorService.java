@@ -2,10 +2,12 @@ package com.champ.healthcare.Doctor.BusinessLogicLayer;
 
 import com.champ.healthcare.Doctor.DataAccessLayer.DoctorRepository;
 import com.champ.healthcare.Doctor.Domain.Doctor;
+import com.champ.healthcare.Doctor.Domain.License;
 import com.champ.healthcare.Doctor.Domain.Speciality;
 import com.champ.healthcare.Doctor.Mapper.DoctorMapper;
 import com.champ.healthcare.Doctor.PresentationLayer.DoctorRequestDTO;
 import com.champ.healthcare.Doctor.PresentationLayer.DoctorResponseDTO;
+import com.champ.healthcare.Doctor.PresentationLayer.LicenseRequestDTO;
 import com.champ.healthcare.utilities.DoctorNotEligibleException;
 import com.champ.healthcare.utilities.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -167,6 +169,26 @@ public class DoctorService {
         return doctorMapper.toResponseDTO(savedDoctor);
     }
 
+    @Transactional
+    public DoctorResponseDTO addLicense(String doctorId, LicenseRequestDTO requestDTO) {
+        log.info("Add a license for doctor {}", doctorId);
+
+        Doctor doctor = doctorRepository
+                .findByDoctorIdentifier_DoctorId(doctorId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Doctor not found with ID: " + doctorId));
+
+        License license = new License(
+                requestDTO.getLicenseName(),
+                requestDTO.getStatus(),
+                LocalDateTime.now()
+        );
+
+        doctor.setLicense(license);
+
+        Doctor sacedDoctor = doctorRepository.save(doctor);
+        return doctorMapper.toResponseDTO(sacedDoctor);
+    }
 
     @Transactional
     public void deleteDoctor(String doctorId) {
