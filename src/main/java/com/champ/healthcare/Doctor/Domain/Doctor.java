@@ -21,10 +21,10 @@ public class Doctor {
     private DoctorIdentifier doctorIdentifier; // Domain identity (UUID)
 
     @Column(nullable = false)
-    private String firstName;
+    private String doctorFirstName;
 
     @Column(nullable = false)
-    private String lastName;
+    private String doctorLastName;
 
     @Column(nullable = false)
     private Boolean isActive;
@@ -32,7 +32,9 @@ public class Doctor {
     @Column(nullable = false)
     private Boolean isValid;
 
+    @Column(nullable = false)
     private String licenseNumber;
+
     private Speciality speciality;
 
 }

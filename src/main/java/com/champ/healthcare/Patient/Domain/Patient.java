@@ -22,12 +22,29 @@ public class Patient {
 
     private PatientIdentifier patientIdentifier;
 
-    private String fullName;
+    @Column(nullable = false)
+    private String patientFirstName;
+
+    @Column(nullable = false)
+    private String patientLastName;
+
+    @Column(nullable = false)
     private Date dateOfBirth;
+
+    @Column(nullable = false)
     private String gender;
+
+    @Column(nullable = false)
     private ContactInfo contactInfo;
+
+    @Column(nullable = false)
     private String insuranceNumber;
+
+    @Column(nullable = false)
     private Allergy allergy;
+
+    @Column(nullable = false)
     private BloodType bloodType;
+
     private PatientStatus status;
 }
