@@ -96,7 +96,7 @@ public class Patient {
 
     private void validateContactInfo(ContactInfo contactInfo) {
         boolean hasEmail = contactInfo.getEmail() != null && !contactInfo.getEmail().isBlank();
-        boolean hasPhone = contactInfo.getPhone() != null ;
+        boolean hasPhone = contactInfo.getPhone() != null && !contactInfo.getPhone().isBlank();
 
         if (!hasEmail && !hasPhone) {
             throw new IllegalArgumentException(

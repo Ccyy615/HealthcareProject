@@ -1,6 +1,11 @@
 -- //////////////////////////////////////////
 -- Data for patients
 -- //////////////////////////////////////////
+INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender,
+                     contact_email, contact_phone, contact_address_street, contact_address_city,
+                     contact_address_province, contact_address_postalcode, contact_address_country,
+                     insurancenumber, allergy, blood_type, patient_status)
+VALUES();
 
 
 -- //////////////////////////////////////////

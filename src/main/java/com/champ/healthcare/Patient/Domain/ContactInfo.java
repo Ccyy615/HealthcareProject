@@ -16,7 +16,7 @@ public class ContactInfo {
     @Email(message = "Email must be valid")
     private String email;
 
-    private PhoneType phone;
+    private String phone;
 
     @Embedded
     private Address address;
