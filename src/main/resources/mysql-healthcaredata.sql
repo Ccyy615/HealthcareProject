@@ -1,11 +1,56 @@
 -- //////////////////////////////////////////
 -- Data for patients
 -- //////////////////////////////////////////
-INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender,
-                     contact_email, contact_phone, contact_address_street, contact_address_city,
-                     contact_address_province, contact_address_postalcode, contact_address_country,
-                     insurancenumber, allergy, blood_type, patient_status)
-VALUES();
+
+--1
+INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender,contact_email, contact_phone, contact_address_street, contact_address_city,
+                     contact_address_province, contact_address_postalcode, contact_address_country,insurancenumber, allergy, blood_type, patient_status)
+VALUES (1, 'c1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6', 'John Smith', '1985-03-15', 'M', 'john.smith@example.com', '514-555-0101', '123 Maple St', 'Montreal', 'Quebec', 'H1A1A1', 'Canada', 'INS-1001', 'Peanuts', 3, 0);
+
+--2
+INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender,contact_email, contact_phone, contact_address_street, contact_address_city,
+                     contact_address_province, contact_address_postalcode, contact_address_country, insurancenumber, allergy, blood_type, patient_status)
+VALUES (2, 'c1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4s9m2', 'Emily Johnson', '1990-07-22', 'F', 'emily.johnson@example.com', '514-555-0102', '456 Oak St', 'Laval', 'Quebec', 'H7B2B2', 'Canada', 'INS-1002', 'None', 0, 0);
+
+--3
+INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender, contact_email, contact_phone, contact_address_street, contact_address_city,
+                     contact_address_province, contact_address_postalcode, contact_address_country, insurancenumber, allergy, blood_type, patient_status)
+VALUES (3, 'e3f4a5b6-c7d8-e9f0-a1b2-c3d4e5f6a7b8', 'Michael Brown', '1978-11-05', 'M', 'michael.brown@example.com', '514-555-0103', '789 Pine St', 'Toronto', 'Ontario', 'M5C1C1', 'Canada', 'INS-1003', 'Gluten', 2, 0);
+
+--4
+INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender,contact_email, contact_phone, contact_address_street, contact_address_city,
+                     contact_address_province, contact_address_postalcode, contact_address_country, insurancenumber, allergy, blood_type, patient_status)
+VALUES (4, 'f4a5b6c7-d8e9-f0a1-b2c3-d4e5f6a7b8c9', 'Sarah Davis', '1995-01-18', 'F', 'sarah.davis@example.com', '514-555-0104', '321 Birch St', 'Montreal', 'Quebec', 'H2D3D3', 'Canada', 'INS-1004', 'Penicillin', 2, 0);
+
+--5
+INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender, contact_email, contact_phone, contact_address_street, contact_address_city,
+                     contact_address_province, contact_address_postalcode, contact_address_country, insurancenumber, allergy, blood_type, patient_status)
+VALUES (5, 'a5b6c7d8-e9f0-a1b2-c3d4-e5f6a7b8c9d0', 'David Lee', '1982-05-30', 'M', 'david.lee@example.com', '514-555-0105', '654 Cedar St', 'Toronto', 'Ontario', 'M4E2E2', 'Canada', 'INS-1005', 'None', 1, 0);
+
+--6
+INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender, contact_email, contact_phone, contact_address_street, contact_address_city,
+                     contact_address_province, contact_address_postalcode, contact_address_country, insurancenumber, allergy, blood_type, patient_status)
+VALUES (6, 'b6c7d8e9-f0a1-b2c3-d4e5-f6a7b8c9d0e1', 'Laura Wilson', '1998-09-12', 'F', 'laura.wilson@example.com', '514-555-0106', '987 Spruce St', 'Laval', 'Quebec', 'H7C3C3', 'Canada', 'INS-1006', 'Latex', 0, 0);
+
+--7
+INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender,contact_email, contact_phone, contact_address_street, contact_address_city,
+                     contact_address_province, contact_address_postalcode, contact_address_country, insurancenumber, allergy, blood_type, patient_status)
+VALUES (7, 'c7d8e9f0-a1b2-c3d4-e5f6-a7b8c9d0e1f2', 'James Martin', '1975-02-25', 'M', 'james.martin@example.com', '514-555-0107', '246 Elm St', 'Montreal', 'Quebec', 'H1B4B4', 'Canada', 'INS-1007', 'Shellfish', 2, 0);
+
+--8
+INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender, contact_email, contact_phone, contact_address_street, contact_address_city,
+                     contact_address_province, contact_address_postalcode, contact_address_country,insurancenumber, allergy, blood_type, patient_status)
+VALUES (8, 'd8e9f0a1-b2c3-d4e5-f6a7-b8c9d0e1f2a3', 'Olivia Thompson', '1988-08-08', 'F', 'olivia.thompson@example.com', '514-555-0108', '135 Walnut St', 'Toronto', 'Ontario', 'M5B5B5', 'Canada', 'INS-1008', 'None', 3, 0);
+
+--9
+INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender, contact_email, contact_phone, contact_address_street, contact_address_city,
+                     contact_address_province, contact_address_postalcode, contact_address_country,insurancenumber, allergy, blood_type, patient_status)
+VALUES (9, 'e9f0a1b2-c3d4-e5f6-a7b8-c9d0e1f2a3b4', 'William Garcia', '1992-12-19', 'M', 'william.garcia@example.com', '514-555-0109', '864 Chestnut St', 'Montreal', 'Quebec', 'H3E4E4', 'Canada', 'INS-1009', 'Peanuts', 1, 0);
+
+--10
+INSERT INTO patients(id, pateint_id, full_name, date_of_birth, gender, contact_email, contact_phone, contact_address_street, contact_address_city,
+                     contact_address_province, contact_address_postalcode, contact_address_country,insurancenumber, allergy, blood_type, patient_status)
+VALUES (10, 'f0a1b2c3-d4e5-f6a7-b8c9-d0e1f2a3b4c5', 'Sophia Martinez', '2000-04-27', 'F', 'sophia.martinez@example.com', '514-555-0110', '579 Poplar St', 'Laval', 'Quebec', 'H7D5D5', 'Canada', 'INS-1010', 'None', 0, 0);
 
 
 -- //////////////////////////////////////////
