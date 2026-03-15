@@ -4,13 +4,11 @@ import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 @Embeddable
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Allergy {
 
     private String substance;

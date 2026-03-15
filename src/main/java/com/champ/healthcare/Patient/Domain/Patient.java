@@ -1,50 +1,95 @@
 package com.champ.healthcare.Patient.Domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "patients")
+@Getter
+@NoArgsConstructor
 public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private PatientIdentifier patientIdentifier;
+    @Embedded
+    private PatientIdentifier patientId;
 
     @Column(nullable = false)
-    private String patientFirstName;
+    private String fullName;
 
     @Column(nullable = false)
-    private String patientLastName;
-
-    @Column(nullable = false)
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(nullable = false)
     private String gender;
 
-    @Column(nullable = false)
+    @Embedded
     private ContactInfo contactInfo;
 
     @Column(nullable = false)
     private String insuranceNumber;
 
-    @Column(nullable = false)
+    @Embedded
     private Allergy allergy;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BloodType bloodType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private PatientStatus status;
+
+    public Patient(
+            String fullName,
+            LocalDate dateOfBirth,
+            String gender,
+            ContactInfo contactInfo,
+            String insuranceNumber,
+            Allergy allergy,
+            BloodType bloodType,
+            PatientStatus status
+    ) {
+        validateContactInfo(contactInfo);
+
+        this.patientId = new PatientIdentifier();
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.contactInfo = contactInfo;
+        this.insuranceNumber = insuranceNumber;
+        this.allergy = allergy;
+        this.bloodType = bloodType;
+        this.status = status;
+    }
+
+    public void updateContactInfo(ContactInfo newContactInfo) {
+        validateContactInfo(newContactInfo);
+        this.contactInfo = newContactInfo;
+    }
+
+    public void deactivate() {
+        this.status = PatientStatus.INACTIVE;
+    }
+
+    public void activate() {
+        this.status = PatientStatus.ACTIVE;
+    }
+
+    private void validateContactInfo(ContactInfo contactInfo) {
+        boolean hasEmail = contactInfo.getEmail() != null && !contactInfo.getEmail().isBlank();
+        boolean hasPhone = contactInfo.getPhone() != null && !contactInfo.getPhone().isBlank();
+
+        if (!hasEmail && !hasPhone) {
+            throw new IllegalArgumentException(
+                    "Patient must have at least one valid contact method: email or phone."
+            );
+        }
+    }
 }
