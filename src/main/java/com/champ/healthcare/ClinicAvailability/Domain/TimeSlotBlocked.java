@@ -15,8 +15,8 @@ import java.time.LocalTime;
 public class TimeSlotBlocked {
 
     @Column(name = "block_start_time")
-    private LocalTime startTime;
+    private LocalTime block_startTime;
 
     @Column(name = "block_end_time")
-    private LocalTime endTime;
+    private LocalTime block_endTime;
 }
