@@ -56,7 +56,7 @@ public class Doctor {
 
     public void activate() {
 
-        if (!hasVerifiedSkill()) {
+        if (!hasVerifiedSpeciality()) {
             throw new DoctorNotEligibleException(
                     "Cannot activate Doctor: No verified speciality found."
             );
@@ -91,7 +91,7 @@ public class Doctor {
     public void removeSpeciality(String specialityName) {
         this.speciality.removeIf(speciality -> speciality.getSpeciality().equalsIgnoreCase(specialityName));
 
-        if (this.isActive && !hasVerifiedSkill()) {
+        if (this.isActive && !hasVerifiedSpeciality()) {
             this.isActive = false;
         }
     }
@@ -111,7 +111,7 @@ public class Doctor {
 
 
 
-    private boolean hasVerifiedSkill() {
+    private boolean hasVerifiedSpeciality() {
         return speciality.stream().anyMatch(Speciality::isVerified);
     }
 
