@@ -54,7 +54,7 @@ INSERT INTO doctor_license (license_id, license_name, doctor_id, status, perform
 VALUES (10302, 'Neurology Specialist License', 'DOC-004', 'EXPIRED', '2018-09-05', '2023-09-05');
 
 INSERT INTO doctor_license (license_id, license_name, doctor_id, status, performed_date, expiry_date)
-VALUES (41053, 'General Medicine Practice License', 'DOC-005', 'VALID', '2020-11-12', '2025-11-12');
+VALUES (41053, 'General Medicine Practice License', 'DOC-005', 'EXPIRED', '2020-11-12', '2025-11-12');
 
 
 -- //////////////////////////////////////////
