@@ -42,7 +42,7 @@ public class Doctor {
     private WorkZone workZone;
 
     @ElementCollection
-    @CollectionTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "doctor_fk"))
+    @CollectionTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "id"))
     private List<Speciality> speciality;
 
     @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)

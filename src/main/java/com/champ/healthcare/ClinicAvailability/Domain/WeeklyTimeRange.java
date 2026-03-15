@@ -13,8 +13,11 @@ import java.time.*;
 public class WeeklyTimeRange {
 
     @Enumerated(EnumType.STRING)
-    private LocalDateTime dayOfWeek;
+    private DayOfWeek dayOfWeek;
 
-    private LocalTime startTime;
-    private LocalTime endTime;
+    @Column(name = "slot_start_time", nullable = false)
+    private LocalTime clinic_startTime;
+
+    @Column(name = "slot_end_time", nullable = false)
+    private LocalTime clinic_endTime;
 }
