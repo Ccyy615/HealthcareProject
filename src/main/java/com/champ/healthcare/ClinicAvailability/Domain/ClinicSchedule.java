@@ -15,6 +15,7 @@ import java.util.*;
 @Setter
 @EqualsAndHashCode
 @Builder
+@Table(name= "clinic_schedules")
 public class ClinicSchedule {
 
     @Id

@@ -15,7 +15,7 @@ import java.util.UUID;
 public class License {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID licenseId;
 
     @Column(nullable = false)

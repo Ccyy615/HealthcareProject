@@ -12,16 +12,16 @@ services:
       - SPRING_PROFILES_ACTIVE=prod
       - JAVA_OPTS=-Xmx512m -Xms256m
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/healthcare_db?createDatabaseIfNotExist=true
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - SPRING_DATASOURCE_USERNAME=usr
+      - SPRING_DATASOURCE_PASSWORD=pwd
     depends_on:
       mysql:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
       interval: 30s
-      timeout: 3s
+      timeout: 5s
       retries: 3
       start_period: 60s
 
@@ -39,10 +39,11 @@ services:
       - mysql-data:/var/lib/mysql
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-usr", "-ppwd"]
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u root -p$MYSQL_ROOT_PASSWORD" ]
       interval: 10s
       timeout: 5s
       retries: 5
+
       start_period: 30s
 
   phpmyadmin:
