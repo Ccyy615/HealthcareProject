@@ -1,6 +1,7 @@
 package com.champ.healthcare.Patient.PresentationLayer;
 
 import com.champ.healthcare.Patient.BusinessLogicLayer.PatientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +30,17 @@ public class PatientController {
     public ResponseEntity<PatientResponseDTO> createPatient(@RequestBody PatientRequestDTO patientRequestDTO) {
         PatientResponseDTO createdPatient = patientService.createPatient(patientRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPatient);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<PatientResponseDTO> updatePatient(@PathVariable Long id,
+                                                            @Valid @RequestBody PatientRequestDTO patientRequestDTO) {
+        PatientResponseDTO updatedPatient = patientService.updatePatient(id, patientRequestDTO);
+        return ResponseEntity.ok(updatedPatient);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PatientResponseDTO> deletePatientById(@PathVariable Long id) {
+        patientService.deletePatientById(id);
+        return ResponseEntity.noContent().build();
     }
 }

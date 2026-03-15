@@ -1,8 +1,7 @@
 package com.champ.healthcare.Patient.Domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -10,7 +9,10 @@ import java.util.UUID;
 @Entity
 @Table(name = "patients")
 @Getter
+@Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Patient {
 
     @Id
@@ -82,9 +84,19 @@ public class Patient {
         this.status = PatientStatus.ACTIVE;
     }
 
+
+    public void updateEmail(String newEmail) {
+        validateEmail(newEmail); // still validates the string
+        if (this.contactInfo == null) {
+            this.contactInfo = new ContactInfo(); // create ContactInfo if it’s null
+        }
+        this.contactInfo.setEmail(newEmail); // update the email inside ContactInfo
+    }
+
+
     private void validateContactInfo(ContactInfo contactInfo) {
         boolean hasEmail = contactInfo.getEmail() != null && !contactInfo.getEmail().isBlank();
-        boolean hasPhone = contactInfo.getPhone() != null && !contactInfo.getPhone().isBlank();
+        boolean hasPhone = contactInfo.getPhone() != null ;
 
         if (!hasEmail && !hasPhone) {
             throw new IllegalArgumentException(
@@ -92,4 +104,14 @@ public class Patient {
             );
         }
     }
+
+    private void validateEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email is required");
+        }
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+    }
+
 }

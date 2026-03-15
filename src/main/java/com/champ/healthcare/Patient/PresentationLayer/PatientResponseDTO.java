@@ -1,7 +1,6 @@
 package com.champ.healthcare.Patient.PresentationLayer;
 
-import com.champ.healthcare.Patient.Domain.BloodType;
-import com.champ.healthcare.Patient.Domain.PatientStatus;
+import com.champ.healthcare.Patient.Domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,14 +19,11 @@ public class PatientResponseDTO {
     private LocalDate dateOfBirth;
     private String gender;
 
-    private String email;
-    private String phone;
-    private String address;
+    private ContactInfo contactInfo;
 
     private String insuranceNumber;
 
-    private String allergySubstance;
-    private String allergyReaction;
+    private Allergy allergy;
 
     private BloodType bloodType;
     private PatientStatus status;
