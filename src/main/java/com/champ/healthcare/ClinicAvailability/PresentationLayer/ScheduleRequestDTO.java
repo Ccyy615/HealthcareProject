@@ -1,4 +1,4 @@
-package com.champ.healthcare.Schedule.PresentationLayer;
+package com.champ.healthcare.ClinicAvailability.PresentationLayer;
 
 public class ScheduleRequestDTO {
 

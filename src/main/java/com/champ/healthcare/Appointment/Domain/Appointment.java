@@ -42,6 +42,4 @@ public class Appointment {
     @Column(name = "doctor_id", columnDefinition = "UUID")
     private UUID doctorId;
 
-    @Column(name = "clinic_id", columnDefinition = "UUID")
-    private UUID clinicId;
 }

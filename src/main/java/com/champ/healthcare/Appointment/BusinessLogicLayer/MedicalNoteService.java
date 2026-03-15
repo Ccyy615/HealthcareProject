@@ -1,6 +1,5 @@
-package com.champ.healthcare.MedicalNote.BusinessLogicLayer;
+package com.champ.healthcare.Appointment.BusinessLogicLayer;
 
-import jdk.jfr.Registered;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

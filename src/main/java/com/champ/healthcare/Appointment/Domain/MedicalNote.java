@@ -1,4 +1,4 @@
-package com.champ.healthcare.MedicalNote.Domain;
+package com.champ.healthcare.Appointment.Domain;
 
 import jakarta.persistence.*;
 import lombok.*;

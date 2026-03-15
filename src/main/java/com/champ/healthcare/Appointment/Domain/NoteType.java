@@ -1,4 +1,4 @@
-package com.champ.healthcare.MedicalNote.Domain;
+package com.champ.healthcare.Appointment.Domain;
 
 public enum NoteType {
     CONSULTATION,
