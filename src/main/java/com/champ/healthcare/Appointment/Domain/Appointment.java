@@ -23,15 +23,17 @@ public class Appointment {
     @Column(name = "appointment_id")
     private Long appointmentId;
 
-    @Column(name = "patient_id", columnDefinition = "UUID")
+
+    @Column(name = "patient_id", columnDefinition = "BINARY(16)", nullable = false)
     private UUID patientId;
 
-    @Column(name = "doctor_id", columnDefinition = "UUID")
+    @Column(name = "doctor_id", columnDefinition = "BINARY(16)", nullable = false)
     private UUID doctorId;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "clinic_id")
     private ClinicSchedule clinic;
+
 
 
     @Enumerated(EnumType.STRING)

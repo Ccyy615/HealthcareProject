@@ -1,0 +1,102 @@
+-- CREATE TABLE patients (
+--                           id INT PRIMARY KEY,
+--                           patient_id VARCHAR(36) UNIQUE NOT NULL,
+--                           full_name VARCHAR(100),
+--                           date_of_birth DATE,
+--                           gender VARCHAR(10),
+--                           contact_email VARCHAR(100),
+--                           contact_phone VARCHAR(20),
+--                           street VARCHAR(100),
+--                           city VARCHAR(50),
+--                           province VARCHAR(50),
+--                           postal_code VARCHAR(20),
+--                           country VARCHAR(50),
+--                           insurancenumber VARCHAR(50),
+--                           allergy_substance VARCHAR(100),
+--                           allergy_reaction VARCHAR(100),
+--                           blood_type VARCHAR(5),
+--                           patient_status VARCHAR(20)
+-- );
+--
+-- CREATE TABLE doctors (
+--                          id INT PRIMARY KEY,
+--                          doctor_id VARCHAR(36) UNIQUE NOT NULL,
+--                          first_name VARCHAR(50),
+--                          last_name VARCHAR(50),
+--                          is_active BOOLEAN,
+--                          is_valid BOOLEAN,
+--                          work_zone_city VARCHAR(50),
+--                          work_zone_province VARCHAR(50)
+-- );
+--
+-- CREATE TABLE doctor_specialities (
+--                                      id INT PRIMARY KEY,
+--                                      speciality_name VARCHAR(100),
+--                                      proficiency_level INT
+-- );
+--
+-- CREATE TABLE doctor_license (
+--                                 license_id INT PRIMARY KEY,
+--                                 license_name VARCHAR(150),
+--                                 doctor_id VARCHAR(36),
+--                                 status INT,
+--                                 performed_date DATE,
+--                                 expiry_date DATE,
+--                                 FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id)
+-- );
+--
+-- CREATE TABLE clinic_schedules (
+--                                   clinic_id INT PRIMARY KEY,
+--                                   doctor_id VARCHAR(36),
+--                                   clinic_location_street VARCHAR(100),
+--                                   clinic_location_city VARCHAR(50),
+--                                   clinic_location_province VARCHAR(50),
+--                                   clinic_location_postalcode VARCHAR(20),
+--                                   clinic_status VARCHAR(20),
+--                                   is_open BOOLEAN,
+--                                   slot_duration INT,
+--                                   FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id)
+-- );
+--
+-- CREATE TABLE clinic_schedules_weekly_hours (
+--                                                id INT AUTO_INCREMENT PRIMARY KEY,
+--                                                clinic_id INT,
+--                                                day_of_week VARCHAR(20),
+--                                                clinic_start_time TIME,
+--                                                clinic_end_time TIME,
+--                                                FOREIGN KEY (clinic_id) REFERENCES clinic_schedules(clinic_id)
+-- );
+-- CREATE TABLE clinic_schedules_blocked_slots (
+--                                                 id INT AUTO_INCREMENT PRIMARY KEY,
+--                                                 clinic_id INT,
+--                                                 block_start_time TIME,
+--                                                 block_end_time TIME,
+--                                                 FOREIGN KEY (clinic_id) REFERENCES clinic_schedules(clinic_id)
+-- );
+-- CREATE TABLE appointments (
+--                               appointment_id INT PRIMARY KEY,
+--                               patient_id VARCHAR(36),
+--                               doctor_id VARCHAR(36),
+--                               clinic_id INT,
+--                               appointment_status VARCHAR(30),
+--                               created_at DATETIME,
+--                               appointment_start DATETIME,
+--                               appointment_end DATETIME,
+--                               descriptions TEXT,
+--                               FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
+--                               FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id),
+--                               FOREIGN KEY (clinic_id) REFERENCES clinic_schedules(clinic_id)
+-- );
+-- CREATE TABLE medical_notes (
+--                                note_id INT PRIMARY KEY,
+--                                appointment_id INT,
+--                                doctor_id VARCHAR(36),
+--                                patient_id VARCHAR(36),
+--                                text TEXT,
+--                                note_create_at DATETIME,
+--                                last_update DATETIME,
+--                                note_type VARCHAR(50),
+--                                FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id),
+--                                FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id),
+--                                FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
+-- );
