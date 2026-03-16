@@ -19,20 +19,25 @@ import java.util.*;
 public class ClinicSchedule {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "clinic_id")
     private Long clinicId;
 
+
+    @Column(name = "doctor_id")
     private DoctorIdentifier doctorId;
 
     @Embedded
     private ClinicLocation clinicLocation;
 
+    @Column(name = "clinic_status")
     private ClinicStatus clinicStatus;
 
     @Builder.Default
+    @Column(name = "is_open")
     private Boolean isOpen = false;
 
-    @Column(name = "schedule_duration")
+    @Column(name = "slot_duration")
     private Integer slotDurationMinutes;
 
     @ElementCollection

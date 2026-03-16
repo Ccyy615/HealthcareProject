@@ -11,17 +11,16 @@ public class PatientMapper {
     public Patient toEntity(PatientRequestDTO patientRequestDTO) {
 
         Address address = new Address(
-                patientRequestDTO.getContactInfo().getAddress().getStreet(),
-                patientRequestDTO.getContactInfo().getAddress().getCity(),
-                patientRequestDTO.getContactInfo().getAddress().getPostal_code(),
-                patientRequestDTO.getContactInfo().getAddress().getProvince(),
-                patientRequestDTO.getContactInfo().getAddress().getCountry()
+                patientRequestDTO.getAddress().getStreet(),
+                patientRequestDTO.getAddress().getCity(),
+                patientRequestDTO.getAddress().getPostal_code(),
+                patientRequestDTO.getAddress().getProvince(),
+                patientRequestDTO.getAddress().getCountry()
         );
 
         ContactInfo contactInfo = new ContactInfo(
                 patientRequestDTO.getContactInfo().getEmail(),
-                patientRequestDTO.getContactInfo().getPhone(),
-                address
+                patientRequestDTO.getContactInfo().getPhone()
         );
 
         Allergy allergy = new Allergy(
@@ -35,6 +34,7 @@ public class PatientMapper {
                 .dateOfBirth(patientRequestDTO.getDateOfBirth())
                 .gender(patientRequestDTO.getGender())
                 .contactInfo(contactInfo)
+                .address(address)
                 .insuranceNumber(patientRequestDTO.getInsuranceNumber())
                 .allergy(allergy)
                 .bloodType(patientRequestDTO.getBloodType())
@@ -50,6 +50,7 @@ public class PatientMapper {
         patientResponseDTO.setDateOfBirth(patient.getDateOfBirth());
         patientResponseDTO.setGender(patient.getGender());
         patientResponseDTO.setContactInfo(patient.getContactInfo());
+        patientResponseDTO.setAddress(patient.getAddress());
         patientResponseDTO.setInsuranceNumber(patient.getInsuranceNumber());
         patientResponseDTO.setAllergy(patient.getAllergy());
         patientResponseDTO.setBloodType(patient.getBloodType());

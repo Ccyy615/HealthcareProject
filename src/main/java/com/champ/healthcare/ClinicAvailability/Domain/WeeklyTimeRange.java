@@ -12,12 +12,13 @@ import java.time.*;
 @Embeddable
 public class WeeklyTimeRange {
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "day_of_week")
     private DayOfWeek dayOfWeek;
 
-    @Column(name = "slot_start_time", nullable = false)
+
+    @Column(name = "clinic_start_time")
     private LocalTime clinic_startTime;
 
-    @Column(name = "slot_end_time", nullable = false)
+    @Column(name = "clinic_end_time")
     private LocalTime clinic_endTime;
 }

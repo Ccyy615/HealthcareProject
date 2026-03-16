@@ -46,7 +46,7 @@ public class PatientServiceImpl implements PatientService {
     public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
         log.info("Creating patient for email: {}", patientRequestDTO.getContactInfo().getEmail());
 
-        if (patientRepository.existsByEmail(patientRequestDTO.getContactInfo().getEmail())) {
+        if (patientRepository.existsByContactInfoEmail(patientRequestDTO.getContactInfo().getEmail())) {
             throw new DuplicateEmailException("Email already exists: " + patientRequestDTO.getContactInfo().getEmail());
         }
         Patient patient = patientMapper.toEntity(patientRequestDTO);
@@ -63,7 +63,7 @@ public class PatientServiceImpl implements PatientService {
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
 
         if (!patient.getContactInfo().getEmail().equals(patientRequestDTO.getContactInfo().getEmail())) {
-            if (patientRepository.existsByEmail(patientRequestDTO.getContactInfo().getEmail())) {
+            if (patientRepository.existsByContactInfoEmail(patientRequestDTO.getContactInfo().getEmail())) {
                 throw new DuplicateEmailException("Email already exists: " + patientRequestDTO.getContactInfo().getEmail());
             }
             patient.updateEmail(patientRequestDTO.getContactInfo().getEmail());

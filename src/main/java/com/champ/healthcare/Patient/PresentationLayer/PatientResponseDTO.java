@@ -21,6 +21,8 @@ public class PatientResponseDTO {
 
     private ContactInfo contactInfo;
 
+    private Address address;
+
     private String insuranceNumber;
 
     private Allergy allergy;

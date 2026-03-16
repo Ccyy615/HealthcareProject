@@ -20,6 +20,8 @@ public class PatientRequestDTO {
 
     private ContactInfo contactInfo;
 
+    private Address address;
+
     private String insuranceNumber;
 
     private Allergy allergy;

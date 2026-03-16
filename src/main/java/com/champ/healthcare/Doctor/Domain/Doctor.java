@@ -20,18 +20,19 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "doctor_id")
     private DoctorIdentifier doctorIdentifier;
 
-    @Column(nullable = false)
+    @Column(name = "first_name")
     private String doctorFirstName;
 
-    @Column(nullable = false)
+    @Column(name = "last_name")
     private String doctorLastName;
 
-    @Column(nullable = false)
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
-    @Column(nullable = false)
+    @Column(name = "is_valid", nullable = false)
     private Boolean isValid;
 
     @Embedded
@@ -42,10 +43,10 @@ public class Doctor {
     private WorkZone workZone;
 
     @ElementCollection
-    @CollectionTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "id"))
+    @CollectionTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "doctor_id"))
     private List<Speciality> speciality;
 
-    @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL)
     private License license;
 
 

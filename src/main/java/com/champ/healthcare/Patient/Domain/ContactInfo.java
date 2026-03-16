@@ -18,6 +18,4 @@ public class ContactInfo {
 
     private String phone;
 
-    @Embedded
-    private Address address;
 }

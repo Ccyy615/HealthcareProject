@@ -32,7 +32,21 @@ public class Patient {
     private String gender;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="email", column=@Column(name="contact_email")),
+            @AttributeOverride(name="phone", column=@Column(name="contact_phone"))
+    })
     private ContactInfo contactInfo;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="street", column=@Column(name="street")),
+            @AttributeOverride(name="city", column=@Column(name="city")),
+            @AttributeOverride(name="province", column=@Column(name="province")),
+            @AttributeOverride(name="postalcode", column=@Column(name="postalcode")),
+            @AttributeOverride(name="country", column=@Column(name="country"))
+    })
+    private Address address;
 
     @Column(nullable = false)
     private String insuranceNumber;

@@ -65,7 +65,7 @@ public class DoctorMapper {
         if (entity.getLicense() != null) {
             License licenseDTO = new License();
 
-            licenseDTO.setLicenseId(entity.getLicense().getLicenseId());
+            licenseDTO.setLicense_id(entity.getLicense().getLicense_id());
             licenseDTO.setLicenseName(entity.getLicense().getLicenseName());
             licenseDTO.setStatus(entity.getLicense().getStatus());
             licenseDTO.setPerformedDate(entity.getLicense().getPerformedDate());

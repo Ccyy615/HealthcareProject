@@ -12,16 +12,16 @@ import lombok.*;
 @Builder
 public class ClinicLocation {
 
-    @Column(name = "street", nullable = false)
+    @Column(name = "clinic_location_street", nullable = false)
     private String street;
 
-    @Column(name = "city", nullable = false)
+    @Column(name = "clinic_location_city", nullable = false)
     private String city;
 
-    @Column(name = "province")
+    @Column(name = "clinic_location_province")
     private String province;
 
-    @Column(name = "postal_code")
+    @Column(name = "clinic_location_postalcode")
     private String postalCode;
 
 

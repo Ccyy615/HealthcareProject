@@ -16,18 +16,19 @@ public class License {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID licenseId;
+    private Long license_id;
 
-    @Column(nullable = false)
+    @Column(name = "license_name", nullable = false)
     private String licenseName;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "status",nullable = false)
     private LicenseStatus status;
 
-    @Column(nullable = false)
+    @Column(name = "performed_date", nullable = false)
     private LocalDateTime performedDate;
 
+    @Column(name = "expiry_date")
     private LocalDateTime expiryDate;
 
 

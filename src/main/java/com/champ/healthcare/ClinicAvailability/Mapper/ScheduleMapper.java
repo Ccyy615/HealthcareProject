@@ -27,9 +27,17 @@ public class ScheduleMapper {
                 .clinicStatus(clinicSchedule.getClinicStatus())
                 .slotDurationMinutes(clinicSchedule.getSlotDurationMinutes())
                 .weeklyTimeRanges(mapWeeklyRanges(clinicSchedule.getWeeklyHours()))
-                .timeSlotBlockedList(clinicSchedule.getBlockedSlots())
+                .timeSlotBlockedList(mapBlockedSlots(clinicSchedule.getBlockedSlots()))
                 .build();
     }
+
+    private static List<TimeSlotBlocked> mapBlockedSlots(List<TimeSlotBlocked> slots){
+        if(slots == null) return new ArrayList<>();
+        return slots.stream()
+                .map(t -> new TimeSlotBlocked(t.getBlock_startTime(), t.getBlock_endTime()))
+                .collect(Collectors.toList());
+    }
+
 
 
 //    public static ScheduleResponseDTO toResponseDTO(ClinicSchedule clinicSchedule) {
