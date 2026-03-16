@@ -12,10 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 public class ContactInfo {
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email must be valid")
     private String email;
-
     private String phone;
 
 }

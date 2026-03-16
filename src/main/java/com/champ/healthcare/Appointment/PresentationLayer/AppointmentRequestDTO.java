@@ -2,6 +2,7 @@ package com.champ.healthcare.Appointment.PresentationLayer;
 
 import com.champ.healthcare.Appointment.Domain.AppointmentStatus;
 import com.champ.healthcare.Appointment.Domain.TimeSlot;
+import com.champ.healthcare.ClinicAvailability.Domain.ClinicSchedule;
 import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
 import com.champ.healthcare.Patient.Domain.PatientIdentifier;
 import jakarta.persistence.*;
@@ -26,9 +27,9 @@ public class AppointmentRequestDTO {
     private TimeSlot timeSlot;
     private String description;
 
-    private UUID patientId;
+    private ClinicSchedule clinicId;
     private UUID doctorId;
-
+    private UUID patientId;
 
 
 

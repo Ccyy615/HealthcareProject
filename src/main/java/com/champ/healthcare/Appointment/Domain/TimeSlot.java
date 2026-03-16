@@ -1,5 +1,6 @@
 package com.champ.healthcare.Appointment.Domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,9 @@ import java.time.LocalDateTime;
 @Embeddable
 public class TimeSlot {
 
+    @Column(name = "appointment_start")
     private LocalDateTime startTime;
+
+    @Column(name = "appointment_end")
     private LocalDateTime endTime;
 }

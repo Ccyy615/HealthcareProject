@@ -12,9 +12,9 @@ public class PatientIdentifier {
 
     private String patientId;
 
-    public PatientIdentifier(String patientId) {
-        this.patientId = patientId;
-    }
+    //public PatientIdentifier(String patientId) {
+    //    this.patientId = patientId;
+    //}
 
     public PatientIdentifier() {
         this.patientId = UUID.randomUUID().toString();

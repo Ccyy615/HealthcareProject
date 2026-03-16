@@ -1,11 +1,11 @@
 package com.champ.healthcare.ClinicAvailability.Domain;
 
+import com.champ.healthcare.Appointment.Domain.TimeSlot;
 import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.*;
 
 @Entity
@@ -30,6 +30,7 @@ public class ClinicSchedule {
     @Embedded
     private ClinicLocation clinicLocation;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "clinic_status")
     private ClinicStatus clinicStatus;
 
@@ -115,6 +116,34 @@ public class ClinicSchedule {
                         !now.isAfter(range.getClinic_endTime())
         );
     }
+
+
+
+    public boolean isSlotAvailable(TimeSlot appointmentSlot) {
+        // Get the date of the appointment
+        LocalDate appointmentDate = appointmentSlot.getStartTime().toLocalDate();
+
+        boolean withinWeeklyHours = weeklyHours.stream()
+                .filter(range -> range.getDayOfWeek() == appointmentSlot.getStartTime().getDayOfWeek())
+                .anyMatch(range -> {
+                    LocalDateTime start = LocalDateTime.of(appointmentDate, range.getClinic_startTime());
+                    LocalDateTime end = LocalDateTime.of(appointmentDate, range.getClinic_endTime());
+                    return !appointmentSlot.getStartTime().isBefore(start) &&
+                            !appointmentSlot.getEndTime().isAfter(end);
+                });
+
+        if (!withinWeeklyHours) return false;
+
+        boolean overlapsBlocked = blockedSlots.stream().anyMatch(blocked -> {
+            LocalDateTime blockedStart = LocalDateTime.of(appointmentDate, blocked.getBlock_startTime());
+            LocalDateTime blockedEnd = LocalDateTime.of(appointmentDate, blocked.getBlock_endTime());
+            return appointmentSlot.getStartTime().isBefore(blockedEnd) &&
+                    appointmentSlot.getEndTime().isAfter(blockedStart);
+        });
+
+        return !overlapsBlocked;
+    }
+
 
 
 }

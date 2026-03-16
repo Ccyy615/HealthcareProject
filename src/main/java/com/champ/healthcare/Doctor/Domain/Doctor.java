@@ -18,6 +18,7 @@ public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "doctor_id")
@@ -42,9 +43,10 @@ public class Doctor {
     })
     private WorkZone workZone;
 
+    @Builder.Default
     @ElementCollection
-    @CollectionTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "doctor_id"))
-    private List<Speciality> speciality;
+    @CollectionTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "id"))
+    private List<Speciality> speciality = new ArrayList<>();
 
     @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL)
     private License license;

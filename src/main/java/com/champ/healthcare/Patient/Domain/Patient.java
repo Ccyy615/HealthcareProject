@@ -19,16 +19,16 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
+    @Column(name = "patient_id")
     private PatientIdentifier patientId;
 
-    @Column(nullable = false)
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(nullable = false)
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @Column(nullable = false)
+    @Column(name = "gender")
     private String gender;
 
     @Embedded
@@ -43,23 +43,25 @@ public class Patient {
             @AttributeOverride(name="street", column=@Column(name="street")),
             @AttributeOverride(name="city", column=@Column(name="city")),
             @AttributeOverride(name="province", column=@Column(name="province")),
-            @AttributeOverride(name="postalcode", column=@Column(name="postalcode")),
+            @AttributeOverride(name="postal_code", column=@Column(name="postalcode")),
             @AttributeOverride(name="country", column=@Column(name="country"))
     })
     private Address address;
 
-    @Column(nullable = false)
+    @Column(name = "insurancenumber", nullable = false)
     private String insuranceNumber;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="substance", column=@Column(name="allergy_substance")),
+            @AttributeOverride(name="reaction", column=@Column(name="allergy_reaction"))
+    })
     private Allergy allergy;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "blood_type", nullable = false)
     private BloodType bloodType;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "patient_status", nullable = false)
     private PatientStatus status;
 
     public Patient(

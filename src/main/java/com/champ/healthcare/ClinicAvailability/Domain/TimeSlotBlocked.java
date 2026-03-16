@@ -19,4 +19,5 @@ public class TimeSlotBlocked {
 
     @Column(name = "block_end_time")
     private LocalTime block_endTime;
+
 }

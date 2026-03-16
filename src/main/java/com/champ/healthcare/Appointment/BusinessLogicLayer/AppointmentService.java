@@ -10,10 +10,11 @@ import java.util.UUID;
 public interface AppointmentService {
 
     List<AppointmentResponseDTO> getAllAppointments();
-    AppointmentResponseDTO getAppointmentById(UUID appointmentId);
+    AppointmentResponseDTO getAppointmentById(Long appointmentId);
     AppointmentResponseDTO createAppointment(AppointmentRequestDTO appointmentRequestDTO);
-    AppointmentResponseDTO updateAppointment(UUID appointmentId, AppointmentRequestDTO appointmentRequestDTO);
-    AppointmentResponseDTO deleteAppointment(UUID appointmentId);
+    AppointmentResponseDTO updateAppointment(Long appointmentId, AppointmentRequestDTO appointmentRequestDTO);
+    AppointmentResponseDTO deleteAppointment(Long appointmentId);
 
-    AppointmentResponseDTO cancelAppointment(UUID appointmentId);
+    AppointmentResponseDTO completeAppointment(Long appointmentId);
+    AppointmentResponseDTO cancelAppointment(Long appointmentId);
 }

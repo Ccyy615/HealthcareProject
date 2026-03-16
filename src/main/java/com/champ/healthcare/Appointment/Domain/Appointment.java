@@ -1,5 +1,6 @@
 package com.champ.healthcare.Appointment.Domain;
 
+import com.champ.healthcare.ClinicAvailability.Domain.ClinicSchedule;
 import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
 import com.champ.healthcare.Patient.Domain.PatientIdentifier;
 import jakarta.persistence.*;
@@ -18,28 +19,53 @@ import java.util.UUID;
 public class Appointment {
 
     @Id
-    @GeneratedValue
-    @Column(name = "appointment_id", columnDefinition = "UUID")
-    private UUID appointmentId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "appointment_id")
+    private Long appointmentId;
+
+    @Column(name = "patient_id", columnDefinition = "CHAR(36)")
+    private UUID patientId;
+
+    @Column(name = "doctor_id", columnDefinition = "CHAR(36)")
+    private UUID doctorId;
+
+    @ManyToOne
+    @JoinColumn(name = "clinic_id")
+    private ClinicSchedule clinic;
+
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "appointment_status", nullable = false)
     private AppointmentStatus status;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "time_slot")
+    @Embedded
     private TimeSlot timeSlot;
 
     @Column(name = "descriptions", length = 5000)
     private String description;
 
+//         /**
+//     *******************************
+//     *******************************
+//     **/
 
-    @Column(name = "patient_id", columnDefinition = "UUID")
-    private UUID patientId;
 
-    @Column(name = "doctor_id", columnDefinition = "UUID")
-    private UUID doctorId;
+    public void confirmAppointment(ClinicSchedule clinic) {
+        if (clinic == null) {
+            throw new IllegalArgumentException("Clinic cannot be null");
+        }
+
+        if (!clinic.isSlotAvailable(this.timeSlot)) {
+            throw new IllegalStateException(
+                    "Cannot confirm appointment: time slot is outside clinic hours or blocked"
+            );
+        }
+
+        this.status = AppointmentStatus.CONFIRMED;
+    }
+
 
 }

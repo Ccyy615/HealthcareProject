@@ -8,11 +8,13 @@ import com.champ.healthcare.Appointment.PresentationLayer.AppointmentRequestDTO;
 import com.champ.healthcare.Appointment.PresentationLayer.AppointmentResponseDTO;
 import com.champ.healthcare.Doctor.DataAccessLayer.DoctorRepository;
 import com.champ.healthcare.Patient.DataAccessLayer.PatientRepository;
+import com.champ.healthcare.utilities.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,45 +23,85 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AppointmentServiceImpl implements AppointmentService{
 
-    private final DoctorRepository doctorRepository;
-    private final PatientRepository patientRepository;
     private final AppointmentRepository appointmentRepository;
 
     @Override
     @Transactional(readOnly = true)
     public List<AppointmentResponseDTO> getAllAppointments() {
-
-        return null;
+        return AppointmentMapper.toResponseDTOList(appointmentRepository.findAll());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public AppointmentResponseDTO getAppointmentById(UUID appointmentId) {
-        return null;
+    public AppointmentResponseDTO getAppointmentById(Long appointmentId) {
+        Appointment appointment = appointmentRepository
+                .findByAppointmentId(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Appointment not found with ID: " + appointmentId));
+        return AppointmentMapper.toResponseDTO(appointment);
     }
 
     @Override
     @Transactional
     public AppointmentResponseDTO createAppointment(AppointmentRequestDTO dto) {
-        return null;
+        Appointment appointment = AppointmentMapper.toEntity(dto);
+        Appointment savedAppointment = appointmentRepository.save(appointment);
+        return AppointmentMapper.toResponseDTO(savedAppointment);
     }
 
     @Override
     @Transactional
-    public AppointmentResponseDTO updateAppointment(UUID jobId, AppointmentRequestDTO dto) {
-        return null;
+    public AppointmentResponseDTO updateAppointment(Long appointmentId, AppointmentRequestDTO dto) {
+
+        Appointment appointment = appointmentRepository
+                .findByAppointmentId(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Appointment not found with ID: " + appointmentId));
+        Appointment updateAppointment = AppointmentMapper.toEntity(dto);
+        updateAppointment.setAppointmentId(appointmentId);
+        updateAppointment.setStatus(appointment.getStatus());
+        updateAppointment.setTimeSlot(appointment.getTimeSlot());
+
+        Appointment savedAppointment = appointmentRepository.save(updateAppointment);
+        return AppointmentMapper.toResponseDTO(savedAppointment);
     }
 
     @Override
     @Transactional
-    public AppointmentResponseDTO deleteAppointment(UUID appointmentId) {
-        return null;
+    public AppointmentResponseDTO deleteAppointment(Long appointmentId) {
+        Appointment appointment = appointmentRepository
+                .findByAppointmentId(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Appointment not found with ID: " + appointmentId));
+        appointmentRepository.delete(appointment);
+        return AppointmentMapper.toResponseDTO(appointment);
     }
-
 
     @Override
     @Transactional
-    public AppointmentResponseDTO cancelAppointment(UUID appointmentId) {
-        return null;
+    public AppointmentResponseDTO completeAppointment(Long appointmentId) {
+        Appointment appointment = appointmentRepository
+                .findByAppointmentId(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Appointment not found with ID: " + appointmentId));
+        if (appointment.getStatus() != AppointmentStatus.IN_PROGRESS) {
+            throw new IllegalStateException("Appointment must be IN_PROGRESS before it can be completed. Current status: " + appointment.getStatus());
+        }
+        appointment.setStatus(AppointmentStatus.COMPLETED);
+        return AppointmentMapper.toResponseDTO(appointmentRepository.save(appointment));
+    }
+
+    @Override
+    @Transactional
+    public AppointmentResponseDTO cancelAppointment(Long appointmentId) {
+        Appointment appointment = appointmentRepository
+                .findByAppointmentId(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Appointment not found with ID: " + appointmentId));
+        if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
+            throw new IllegalStateException("A COMPLETED appointment cannot be cancelled.");
+        }
+        appointment.setStatus(AppointmentStatus.CANCELLED);
+        return AppointmentMapper.toResponseDTO(appointmentRepository.save(appointment));
     }
 }

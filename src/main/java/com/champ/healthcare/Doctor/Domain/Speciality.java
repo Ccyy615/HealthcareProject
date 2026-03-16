@@ -1,5 +1,6 @@
 package com.champ.healthcare.Doctor.Domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,9 +15,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Speciality {
+
+    @Column(name = "speciality_name")
     private String speciality;
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "proficiency_level")
     private ProficiencyLevel proficiencyLevel;
 
     public void validate() {

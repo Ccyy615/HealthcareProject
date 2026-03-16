@@ -21,7 +21,6 @@ public class License {
     @Column(name = "license_name", nullable = false)
     private String licenseName;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
     private LicenseStatus status;
 
