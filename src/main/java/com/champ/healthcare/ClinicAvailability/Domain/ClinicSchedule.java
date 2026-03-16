@@ -24,7 +24,7 @@ public class ClinicSchedule {
     private Long clinicId;
 
 
-    @Column(name = "doctor_id")
+    @Column(name = "doctor_id", columnDefinition = "UUID")
     private DoctorIdentifier doctorId;
 
     @Embedded

@@ -31,7 +31,7 @@ public class License {
     private LocalDateTime expiryDate;
 
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 

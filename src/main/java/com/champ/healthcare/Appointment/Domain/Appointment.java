@@ -23,10 +23,10 @@ public class Appointment {
     @Column(name = "appointment_id")
     private Long appointmentId;
 
-    @Column(name = "patient_id", columnDefinition = "CHAR(36)")
+    @Column(name = "patient_id", columnDefinition = "UUID")
     private UUID patientId;
 
-    @Column(name = "doctor_id", columnDefinition = "CHAR(36)")
+    @Column(name = "doctor_id", columnDefinition = "UUID")
     private UUID doctorId;
 
     @ManyToOne
@@ -42,6 +42,10 @@ public class Appointment {
     private LocalDateTime createdAt;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="startTime", column=@Column(name="appointment_start")),
+            @AttributeOverride(name="endTime", column=@Column(name="appointment_end"))
+    })
     private TimeSlot timeSlot;
 
     @Column(name = "descriptions", length = 5000)

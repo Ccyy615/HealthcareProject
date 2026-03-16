@@ -38,7 +38,7 @@ public class DoctorService {
 
 
     @Transactional(readOnly = true)
-    public DoctorResponseDTO getDoctorById(String doctorId) {
+    public DoctorResponseDTO getDoctorById(UUID doctorId) {
         log.info("Fetching doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
@@ -63,7 +63,7 @@ public class DoctorService {
     }
 
     @Transactional
-    public DoctorResponseDTO updateDoctor(String doctorId, DoctorRequestDTO requestDTO) {
+    public DoctorResponseDTO updateDoctor(UUID doctorId, DoctorRequestDTO requestDTO) {
         log.info("Updating doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
@@ -103,7 +103,7 @@ public class DoctorService {
 
 
     @Transactional
-    public DoctorResponseDTO activateDoctor(String doctorId) {
+    public DoctorResponseDTO activateDoctor(UUID doctorId) {
         log.info("Activating doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
@@ -123,7 +123,7 @@ public class DoctorService {
     }
 
     @Transactional
-    public DoctorResponseDTO deactivateDoctor(String doctorId) {
+    public DoctorResponseDTO deactivateDoctor(UUID doctorId) {
         log.info("Deactivating doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
@@ -139,7 +139,7 @@ public class DoctorService {
     }
 
     @Transactional
-    public DoctorResponseDTO addSpeciality(String doctorId, Speciality specialityDTO) {
+    public DoctorResponseDTO addSpeciality(UUID doctorId, Speciality specialityDTO) {
         log.info("Adding skill {} to handyman {}", specialityDTO.getSpeciality(), doctorId);
 
         Doctor doctor = doctorRepository
@@ -155,7 +155,7 @@ public class DoctorService {
     }
 
     @Transactional
-    public DoctorResponseDTO removeSpeciality(String doctorId, String specialityName) {
+    public DoctorResponseDTO removeSpeciality(UUID doctorId, String specialityName) {
         log.info("Removing skill {} from handyman {}", specialityName, doctorId);
 
         Doctor doctor = doctorRepository
@@ -170,7 +170,7 @@ public class DoctorService {
     }
 
     @Transactional
-    public DoctorResponseDTO addLicense(String doctorId, LicenseRequestDTO requestDTO) {
+    public DoctorResponseDTO addLicense(UUID doctorId, LicenseRequestDTO requestDTO) {
         log.info("Add a license for doctor {}", doctorId);
 
         Doctor doctor = doctorRepository
@@ -191,7 +191,7 @@ public class DoctorService {
     }
 
     @Transactional
-    public void deleteDoctor(String doctorId) {
+    public void deleteDoctor(UUID doctorId) {
         log.info("Deleting doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository

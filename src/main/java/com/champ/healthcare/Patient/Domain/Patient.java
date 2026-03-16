@@ -43,7 +43,7 @@ public class Patient {
             @AttributeOverride(name="street", column=@Column(name="street")),
             @AttributeOverride(name="city", column=@Column(name="city")),
             @AttributeOverride(name="province", column=@Column(name="province")),
-            @AttributeOverride(name="postal_code", column=@Column(name="postalcode")),
+            @AttributeOverride(name="postal_code", column=@Column(name="postal_code")),
             @AttributeOverride(name="country", column=@Column(name="country"))
     })
     private Address address;
@@ -58,9 +58,11 @@ public class Patient {
     })
     private Allergy allergy;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "blood_type", nullable = false)
     private BloodType bloodType;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "patient_status", nullable = false)
     private PatientStatus status;
 
@@ -102,11 +104,11 @@ public class Patient {
 
 
     public void updateEmail(String newEmail) {
-        validateEmail(newEmail); // still validates the string
+        validateEmail(newEmail);
         if (this.contactInfo == null) {
-            this.contactInfo = new ContactInfo(); // create ContactInfo if it’s null
+            this.contactInfo = new ContactInfo();
         }
-        this.contactInfo.setEmail(newEmail); // update the email inside ContactInfo
+        this.contactInfo.setEmail(newEmail);
     }
 
 

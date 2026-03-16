@@ -1,8 +1,6 @@
 package com.champ.healthcare.Patient.BusinessLogicLayer;
 
 import com.champ.healthcare.Patient.DataAccessLayer.PatientRepository;
-import com.champ.healthcare.Patient.Domain.Allergy;
-import com.champ.healthcare.Patient.Domain.ContactInfo;
 import com.champ.healthcare.Patient.Domain.Patient;
 import com.champ.healthcare.Patient.Mapper.PatientMapper;
 import com.champ.healthcare.Patient.PresentationLayer.PatientRequestDTO;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +33,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional(readOnly = true)
-    public PatientResponseDTO getPatientById(Long id) {
+    public PatientResponseDTO getPatientById(UUID id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
 
@@ -57,7 +56,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
-    public PatientResponseDTO updatePatient(Long id, PatientRequestDTO patientRequestDTO) {
+    public PatientResponseDTO updatePatient(UUID id, PatientRequestDTO patientRequestDTO) {
         log.info("Updating patient for id: {}", id);
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
@@ -77,7 +76,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
-    public PatientResponseDTO deletePatientById(Long id) {
+    public PatientResponseDTO deletePatientById(UUID id) {
         log.info("Deleting patient for id: {}", id);
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));

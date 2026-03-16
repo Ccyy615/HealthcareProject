@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.*;
 
-public interface DoctorRepository extends JpaRepository<Doctor, Long> {
+public interface DoctorRepository extends JpaRepository<Doctor, UUID> {
 
-    Optional<Doctor> findByDoctorIdentifier_DoctorId(String doctorId);
+    Optional<Doctor> findByDoctorIdentifier_DoctorId(UUID doctorId);
 
     List<Doctor> findByIsActiveTrue();
 

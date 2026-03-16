@@ -18,7 +18,7 @@ public class ScheduleMapper {
         return ScheduleResponseDTO.builder()
                 .clinicId(clinicSchedule.getClinicId())
                 .doctorId(clinicSchedule.getDoctorId() != null
-                        ? clinicSchedule.getDoctorId().getDoctorId()
+                        ? String.valueOf(clinicSchedule.getDoctorId())
                         : null)
                 .street(location != null ? location.getStreet() : null)
                 .city(location != null ? location.getCity() : null)
@@ -99,7 +99,7 @@ public class ScheduleMapper {
                 .build();
 
         return ClinicSchedule.builder()
-                .doctorId(new DoctorIdentifier(scheduleRequestDTO.getDoctorId()))
+                .doctorId(new DoctorIdentifier())
                 .clinicLocation(location)
                 .clinicStatus(scheduleRequestDTO.getClinicStatus())
                 .isOpen(false)

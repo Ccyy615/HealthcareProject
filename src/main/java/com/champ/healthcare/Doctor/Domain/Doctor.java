@@ -45,7 +45,7 @@ public class Doctor {
 
     @Builder.Default
     @ElementCollection
-    @CollectionTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "id"))
+    @CollectionTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "doctor_id"))
     private List<Speciality> speciality = new ArrayList<>();
 
     @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL)

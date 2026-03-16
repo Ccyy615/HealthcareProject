@@ -13,13 +13,13 @@ import java.time.LocalDate;
 public class PatientResponseDTO {
 
     private Long id;
-    private String patientId;
+    private PatientIdentifier patientId;
 
     private String fullName;
     private LocalDate dateOfBirth;
     private String gender;
 
-    private ContactInfo contactInfo;
+    private  ContactInfo contactInfo;
 
     private Address address;
 

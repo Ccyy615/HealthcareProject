@@ -18,10 +18,6 @@ public class PatientMapper {
                 patientRequestDTO.getAddress().getCountry()
         );
 
-        ContactInfo contactInfo = new ContactInfo(
-                patientRequestDTO.getContactInfo().getEmail(),
-                patientRequestDTO.getContactInfo().getPhone()
-        );
 
         Allergy allergy = new Allergy(
                 patientRequestDTO.getAllergy().getSubstance(),
@@ -33,7 +29,7 @@ public class PatientMapper {
                 .fullName(patientRequestDTO.getFullName())
                 .dateOfBirth(patientRequestDTO.getDateOfBirth())
                 .gender(patientRequestDTO.getGender())
-                .contactInfo(contactInfo)
+                .contactInfo(patientRequestDTO.getContactInfo())
                 .address(address)
                 .insuranceNumber(patientRequestDTO.getInsuranceNumber())
                 .allergy(allergy)
@@ -45,7 +41,7 @@ public class PatientMapper {
 
     public PatientResponseDTO  toResponseDTO(Patient patient) {
         PatientResponseDTO patientResponseDTO = new PatientResponseDTO();
-        patientResponseDTO.setPatientId(patient.getPatientId().getPatientId());
+        patientResponseDTO.setPatientId(patient.getPatientId());
         patientResponseDTO.setFullName(patient.getFullName());
         patientResponseDTO.setDateOfBirth(patient.getDateOfBirth());
         patientResponseDTO.setGender(patient.getGender());

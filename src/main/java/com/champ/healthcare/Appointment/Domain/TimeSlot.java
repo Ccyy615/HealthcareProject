@@ -16,9 +16,7 @@ import java.time.LocalDateTime;
 @Embeddable
 public class TimeSlot {
 
-    @Column(name = "appointment_start")
     private LocalDateTime startTime;
 
-    @Column(name = "appointment_end")
     private LocalDateTime endTime;
 }
