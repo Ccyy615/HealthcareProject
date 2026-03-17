@@ -23,7 +23,7 @@ public class DoctorMapper {
                 : null;
 
         return Doctor.builder()
-                .doctorIdentifier(new DoctorIdentifier())
+                .doctorId(new DoctorIdentifier())
                 .doctorFirstName(doctorRequestDTO.getDoctorFirstName())
                 .doctorLastName(doctorRequestDTO.getDoctorLastName())
                 .workZone(workZone)
@@ -37,7 +37,7 @@ public class DoctorMapper {
 
     public DoctorResponseDTO toResponseDTO (Doctor entity) {
         DoctorResponseDTO doctorResponseDTO = new DoctorResponseDTO();
-        doctorResponseDTO.setDoctorId(entity.getDoctorIdentifier().getDoctorId());
+        doctorResponseDTO.setDoctorId(entity.getDoctorId().getDoctorId());
         doctorResponseDTO.setDoctorFirstName(entity.getDoctorFirstName());
         doctorResponseDTO.setDoctorLastName(entity.getDoctorLastName());
         doctorResponseDTO.setIsActive(entity.getIsActive());

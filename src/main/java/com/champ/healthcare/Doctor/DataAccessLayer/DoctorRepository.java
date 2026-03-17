@@ -8,7 +8,9 @@ import java.util.*;
 
 public interface DoctorRepository extends JpaRepository<Doctor, UUID> {
 
-    Optional<Doctor> findByDoctorIdentifier_DoctorId(UUID doctorId);
+    Optional<Doctor> findByDoctorId_DoctorId(UUID doctorId);
+
+    //Optional<Doctor> findByDoctorId_DoctorId(UUID doctorId);
 
     List<Doctor> findByIsActiveTrue();
 

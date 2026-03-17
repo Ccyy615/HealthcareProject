@@ -19,7 +19,7 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "patient_id")
+    @Embedded
     private PatientIdentifier patientId;
 
     @Column(name = "full_name", nullable = false)

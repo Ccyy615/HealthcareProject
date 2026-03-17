@@ -2,9 +2,9 @@ package com.champ.healthcare.Appointment.PresentationLayer;
 
 import com.champ.healthcare.Appointment.Domain.Appointment;
 import com.champ.healthcare.Appointment.Domain.NoteType;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
+import com.champ.healthcare.Patient.Domain.PatientIdentifier;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,8 +19,8 @@ public class MedicalNoteResponseDTO {
     private Long noteId;
 
     private Appointment appointmentId;
-    private UUID doctorId;
-    private UUID patientId;
+    private DoctorIdentifier doctorId;
+    private PatientIdentifier patientId;
 
     private String noteText;
 

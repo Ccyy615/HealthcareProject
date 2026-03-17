@@ -1,6 +1,7 @@
 package com.champ.healthcare.Appointment.PresentationLayer;
 
 import com.champ.healthcare.Appointment.BusinessLogicLayer.AppointmentService;
+import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,15 @@ public class AppointmentController {
     public ResponseEntity<AppointmentResponseDTO> getAppointmentById(@PathVariable Long appointmentId) {
         return ResponseEntity.ok(appointmentService.getAppointmentById(appointmentId));
     }
+
+    @GetMapping("/{doctorId}")
+    public List<AppointmentResponseDTO> getAppointmentsByDoctorId(@PathVariable String doctorId) {
+
+        DoctorIdentifier doctorIdentifier = new DoctorIdentifier(doctorId);
+
+        return appointmentService.getAppointmentsByDoctorId(doctorIdentifier);
+    }
+
 
     @PostMapping
     public ResponseEntity<AppointmentResponseDTO> createAppointment(@RequestBody AppointmentRequestDTO dto) {

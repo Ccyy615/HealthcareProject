@@ -21,8 +21,8 @@ public class Doctor {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "doctor_id")
-    private DoctorIdentifier doctorIdentifier;
+    @Embedded
+    private DoctorIdentifier doctorId;
 
     @Column(name = "first_name")
     private String doctorFirstName;
@@ -43,14 +43,18 @@ public class Doctor {
     })
     private WorkZone workZone;
 
-    @Builder.Default
     @ElementCollection
-    @CollectionTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "doctor_id"))
-    private List<Speciality> speciality = new ArrayList<>();
+    @CollectionTable(
+            name = "doctor_specialities",
+            joinColumns = @JoinColumn(
+                    name = "doctor_id",
+                    referencedColumnName = "doctor_id"
+            )
+    )
+    private final List<Speciality> speciality = new ArrayList<>();
 
-    @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private License license;
-
 
 //    /**
 //     * Invariant

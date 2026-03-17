@@ -38,7 +38,6 @@ services:
 #      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$MYSQL_ROOT_PASSWORD"]
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpassword" ]
-
       interval: 10s
       timeout: 5s
       retries: 5

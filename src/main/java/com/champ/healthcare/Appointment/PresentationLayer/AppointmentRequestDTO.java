@@ -28,8 +28,8 @@ public class AppointmentRequestDTO {
     private String description;
 
     private ClinicSchedule clinicId;
-    private UUID doctorId;
-    private UUID patientId;
+    private DoctorIdentifier doctorId;
+    private PatientIdentifier patientId;
 
 
 

@@ -1,6 +1,8 @@
 package com.champ.healthcare.Appointment.Domain;
 
+import com.champ.healthcare.Doctor.Domain.Doctor;
 import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
+import com.champ.healthcare.Patient.Domain.Patient;
 import com.champ.healthcare.Patient.Domain.PatientIdentifier;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,12 +28,20 @@ public class MedicalNote {
     @JoinColumn(name = "appointment_id", nullable = false)
     private Appointment appointment;
 
+//    @ManyToOne
+//    @JoinColumn(name = "doctor_id", nullable = false)
+//    private Doctor doctor;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "patient_id", nullable = false)
+//    private Patient patient;
+
 
     @Column(name = "doctor_id", columnDefinition = "UUID")
-    private UUID doctorId;
+    private DoctorIdentifier doctorId;
 
     @Column(name = "patient_id", columnDefinition = "UUID")
-    private UUID patientId;
+    private PatientIdentifier patientId;
 
     @Column(name = "text")
     private String noteText;

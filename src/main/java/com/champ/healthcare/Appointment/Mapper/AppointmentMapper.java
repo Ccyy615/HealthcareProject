@@ -20,8 +20,8 @@ public class AppointmentMapper {
                 .createdAt(appointment.getCreatedAt())
                 .timeSlot(appointment.getTimeSlot())
                 .description(appointment.getDescription())
-                .clinicId(appointment.getClinic().getClinicId())
-                .doctorId(appointment.getDoctorId())
+                .clinicId(appointment.getClinic())
+                .doctorId(appointment.getClinic().getDoctorId())
                 .patientId(appointment.getPatientId())
                 .build();
     }
@@ -33,7 +33,6 @@ public class AppointmentMapper {
                 .timeSlot(appointmentRequestDTO.getTimeSlot())
                 .description(appointmentRequestDTO.getDescription())
                 .clinic(appointmentRequestDTO.getClinicId())
-                .doctorId(appointmentRequestDTO.getDoctorId())
                 .patientId(appointmentRequestDTO.getPatientId())
                 .build();
     }

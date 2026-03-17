@@ -35,7 +35,7 @@ public class MedicalNoteController {
     }
 
     @DeleteMapping("/{note_id}")
-    public ResponseEntity<MedicalNoteResponseDTO> deletenote(@PathVariable Long noteId) {
-        return ResponseEntity.ok(medicalNoteService.deletenote(noteId));
+    public ResponseEntity<MedicalNoteResponseDTO> deleteNote(@PathVariable Long noteId) {
+        return ResponseEntity.ok(medicalNoteService.deleteNote(noteId));
     }
 }

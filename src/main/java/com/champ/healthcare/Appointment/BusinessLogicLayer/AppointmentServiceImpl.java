@@ -1,13 +1,10 @@
 package com.champ.healthcare.Appointment.BusinessLogicLayer;
 
 import com.champ.healthcare.Appointment.DataAccessLayer.AppointmentRepository;
-import com.champ.healthcare.Appointment.Domain.Appointment;
-import com.champ.healthcare.Appointment.Domain.AppointmentStatus;
+import com.champ.healthcare.Appointment.Domain.*;
 import com.champ.healthcare.Appointment.Mapper.AppointmentMapper;
-import com.champ.healthcare.Appointment.PresentationLayer.AppointmentRequestDTO;
-import com.champ.healthcare.Appointment.PresentationLayer.AppointmentResponseDTO;
-import com.champ.healthcare.Doctor.DataAccessLayer.DoctorRepository;
-import com.champ.healthcare.Patient.DataAccessLayer.PatientRepository;
+import com.champ.healthcare.Appointment.PresentationLayer.*;
+import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
 import com.champ.healthcare.utilities.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -42,9 +38,35 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<AppointmentResponseDTO> getAppointmentsByDoctorId(DoctorIdentifier doctorId) {
+
+        List<Appointment> appointments = appointmentRepository.findByClinic_DoctorId(doctorId);
+
+        if (appointments.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No appointments found for doctorId: " + doctorId
+            );
+        }
+
+        return AppointmentMapper.toResponseDTOList(appointments);
+    }
+
+
+    @Override
     @Transactional
     public AppointmentResponseDTO createAppointment(AppointmentRequestDTO dto) {
         Appointment appointment = AppointmentMapper.toEntity(dto);
+        // check that docter is avialble on that time
+        // check that there is no other appointment at that time for the given doctor
+        // through querying the repository
+        appointment.getDoctorId();
+        appointment.getTimeSlot();
+
+
+
+
+
         Appointment savedAppointment = appointmentRepository.save(appointment);
         return AppointmentMapper.toResponseDTO(savedAppointment);
     }

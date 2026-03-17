@@ -1,8 +1,7 @@
 package com.champ.healthcare.Appointment.BusinessLogicLayer;
 
 import com.champ.healthcare.Appointment.DataAccessLayer.MedicalNoteRepository;
-import com.champ.healthcare.Appointment.Domain.Appointment;
-import com.champ.healthcare.Appointment.Domain.MedicalNote;
+import com.champ.healthcare.Appointment.Domain.*;
 import com.champ.healthcare.Appointment.Mapper.*;
 import com.champ.healthcare.Appointment.PresentationLayer.*;
 import com.champ.healthcare.utilities.ResourceNotFoundException;
@@ -19,7 +18,6 @@ import java.util.List;
 public class MedicalNoteService {
 
     private final MedicalNoteRepository medicalNoteRepository;
-    private final MedicalNoteMapper  medicalNoteMapper;
 
     @Transactional(readOnly = true)
     public List<MedicalNoteResponseDTO> getAllNotes() {
@@ -58,7 +56,7 @@ public class MedicalNoteService {
     }
 
     @Transactional
-    public MedicalNoteResponseDTO deletenote(Long noteId) {
+    public MedicalNoteResponseDTO deleteNote(Long noteId) {
         MedicalNote note = medicalNoteRepository
                 .findByNoteId(noteId)
                 .orElseThrow(() -> new ResourceNotFoundException(

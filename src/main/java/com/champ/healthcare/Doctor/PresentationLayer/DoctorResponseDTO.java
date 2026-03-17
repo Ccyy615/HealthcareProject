@@ -23,3 +23,4 @@ public class DoctorResponseDTO {
     private License license;
 
 }
+

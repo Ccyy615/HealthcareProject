@@ -42,7 +42,7 @@ public class DoctorService {
         log.info("Fetching doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
-                .findByDoctorIdentifier_DoctorId(doctorId)
+                .findByDoctorId_DoctorId(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Doctor not found with ID: " + doctorId));
 
@@ -54,11 +54,11 @@ public class DoctorService {
 
         Doctor doctor = doctorMapper.toEntity(requestDTO);
         log.info("Handyman profile created with ID: {}",
-                doctor.getDoctorIdentifier().getDoctorId());
+                doctor.getDoctorId().getDoctorId());
 
         Doctor savedDoctor = doctorRepository.save(doctor);
         log.info("Doctor saved with ID: {}",
-                savedDoctor.getDoctorIdentifier().getDoctorId());
+                savedDoctor.getDoctorId().getDoctorId());
         return doctorMapper.toResponseDTO(savedDoctor);
     }
 
@@ -67,11 +67,11 @@ public class DoctorService {
         log.info("Updating doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
-                .findByDoctorIdentifier_DoctorId(doctorId)
+                .findByDoctorId_DoctorId(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Doctor not found with ID: " + doctorId));
         log.info("Doctor found with ID: {}",
-                doctor.getDoctorIdentifier().getDoctorId());
+                doctor.getDoctorId().getDoctorId());
 
         Doctor doctorProfile = doctorMapper.toEntity(requestDTO);
         doctorProfile.setId(doctor.getId()); //keep same id
@@ -107,7 +107,7 @@ public class DoctorService {
         log.info("Activating doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
-                .findByDoctorIdentifier_DoctorId(doctorId)
+                .findByDoctorId_DoctorId(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Doctor not found with ID: " + doctorId));
 
@@ -127,7 +127,7 @@ public class DoctorService {
         log.info("Deactivating doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
-                .findByDoctorIdentifier_DoctorId(doctorId)
+                .findByDoctorId_DoctorId(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Doctor not found with ID: " + doctorId));
 
@@ -143,7 +143,7 @@ public class DoctorService {
         log.info("Adding skill {} to handyman {}", specialityDTO.getSpeciality(), doctorId);
 
         Doctor doctor = doctorRepository
-                .findByDoctorIdentifier_DoctorId(doctorId)
+                .findByDoctorId_DoctorId(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Doctor not found with ID: " + doctorId));
 
@@ -159,7 +159,7 @@ public class DoctorService {
         log.info("Removing skill {} from handyman {}", specialityName, doctorId);
 
         Doctor doctor = doctorRepository
-                .findByDoctorIdentifier_DoctorId(doctorId)
+                .findByDoctorId_DoctorId(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Doctor not found with ID: " + doctorId));
 
@@ -174,7 +174,7 @@ public class DoctorService {
         log.info("Add a license for doctor {}", doctorId);
 
         Doctor doctor = doctorRepository
-                .findByDoctorIdentifier_DoctorId(doctorId)
+                .findByDoctorId_DoctorId(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Doctor not found with ID: " + doctorId));
 
@@ -195,7 +195,7 @@ public class DoctorService {
         log.info("Deleting doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
-                .findByDoctorIdentifier_DoctorId(doctorId)
+                .findByDoctorId_DoctorId(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Doctor not found with ID: " + doctorId));
 

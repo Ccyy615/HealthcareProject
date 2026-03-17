@@ -24,16 +24,18 @@ public class Appointment {
     private Long appointmentId;
 
 
-    @Column(name = "patient_id", columnDefinition = "BINARY(16)", nullable = false)
-    private UUID patientId;
+    @Embedded
+    private PatientIdentifier patientId;
 
-    @Column(name = "doctor_id", columnDefinition = "BINARY(16)", nullable = false)
-    private UUID doctorId;
+//    @Column(name = "doctor_id", columnDefinition = "BINARY(16)", nullable = false)
+//    private DoctorIdentifier doctorId;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "clinic_id")
-    private ClinicSchedule clinic;
+//    @ManyToOne(optional = false)
+//    @JoinColumn(name = "clinic_id")
+//    private ClinicSchedule clinic;
 
+    @JoinColumn(name = "doctor_id")
+    private DoctorIdentifier doctorId;
 
 
     @Enumerated(EnumType.STRING)
@@ -59,19 +61,46 @@ public class Appointment {
 //     **/
 
 
-    public void confirmAppointment(ClinicSchedule clinic) {
-        if (clinic == null) {
-            throw new IllegalArgumentException("Clinic cannot be null");
-        }
 
-        if (!clinic.isSlotAvailable(this.timeSlot)) {
-            throw new IllegalStateException(
-                    "Cannot confirm appointment: time slot is outside clinic hours or blocked"
-            );
-        }
 
-        this.status = AppointmentStatus.CONFIRMED;
-    }
+
+//    public DoctorIdentifier getDoctorId() {
+//        if (clinic == null) {
+//            throw new IllegalStateException("Clinic is not assigned to this appointment");
+//        }
+//        return clinic.getDoctorId();
+//    }
+
+//    public void confirmAppointment() {
+//
+//        if (this.clinic == null) {
+//            throw new IllegalStateException("Clinic cannot be null");
+//        }
+//
+//        if (!clinic.isSlotAvailable(this.timeSlot)) {
+//            throw new IllegalStateException(
+//                    "Cannot confirm appointment: time slot is outside clinic hours or blocked"
+//            );
+//        }
+//
+//        this.status = AppointmentStatus.CONFIRMED;
+//    }
+
+
+
+//    public void confirmAppointment(ClinicSchedule clinic) {
+//        if (clinic == null) {
+//            throw new IllegalArgumentException("Clinic cannot be null");
+//        }
+//
+//        if (!clinic.isSlotAvailable(this.timeSlot)) {
+//            throw new IllegalStateException(
+//                    "Cannot confirm appointment: time slot is outside clinic hours or blocked"
+//            );
+//        }
+//
+//        this.status = AppointmentStatus.CONFIRMED;
+//    }
 
 
 }
