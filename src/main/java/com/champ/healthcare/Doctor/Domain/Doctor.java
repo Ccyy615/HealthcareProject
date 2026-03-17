@@ -43,6 +43,7 @@ public class Doctor {
     })
     private WorkZone workZone;
 
+    @Builder.Default
     @ElementCollection
     @CollectionTable(
             name = "doctor_specialities",
@@ -51,7 +52,7 @@ public class Doctor {
                     referencedColumnName = "doctor_id"
             )
     )
-    private final List<Speciality> speciality = new ArrayList<>();
+    private List<Speciality> speciality = new ArrayList<>();
 
     @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private License license;

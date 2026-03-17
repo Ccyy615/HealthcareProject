@@ -44,19 +44,24 @@ public class ClinicSchedule {
     @Column(name = "slot_duration")
     private Integer slotDurationMinutes;
 
+    @Builder.Default
     @ElementCollection
     @CollectionTable(
             name = "clinic_schedules_weekly_hours",
             joinColumns = @JoinColumn(name = "clinic_id")
     )
-    private final List<WeeklyTimeRange> weeklyHours = new ArrayList<>();
+    private List<WeeklyTimeRange> weeklyHours = new ArrayList<>();
 
+    //private final List<WeeklyTimeRange> weeklyHours = new ArrayList<>();
+
+    @Builder.Default
     @ElementCollection
     @CollectionTable(
             name = "clinic_schedules_blocked_slots",
             joinColumns = @JoinColumn(name = "clinic_id")
     )
-    private final List<TimeSlotBlocked> blockedSlots = new ArrayList<>();
+    private List<TimeSlotBlocked> blockedSlots = new ArrayList<>(); //    private final List<TimeSlotBlocked> blockedSlots = new ArrayList<>();
+
 
 
     @OneToMany(mappedBy = "clinic")
