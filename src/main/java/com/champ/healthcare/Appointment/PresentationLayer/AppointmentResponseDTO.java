@@ -28,7 +28,7 @@ public class AppointmentResponseDTO {
     private TimeSlot timeSlot;
     private String description;
 
-    private ClinicSchedule clinicId;
+//    private ClinicSchedule clinicId;
     private DoctorIdentifier doctorId;
     private PatientIdentifier patientId;
 }

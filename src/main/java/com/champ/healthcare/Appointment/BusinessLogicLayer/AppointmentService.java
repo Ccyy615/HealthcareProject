@@ -13,7 +13,7 @@ public interface AppointmentService {
     List<AppointmentResponseDTO> getAllAppointments();
     AppointmentResponseDTO getAppointmentById(Long appointmentId);
 
-    List<AppointmentResponseDTO> getAppointmentsByDoctorId(DoctorIdentifier doctorId);
+    //List<AppointmentResponseDTO> getAppointmentsByDoctorId(DoctorIdentifier doctorId);
 
     AppointmentResponseDTO createAppointment(AppointmentRequestDTO appointmentRequestDTO);
     AppointmentResponseDTO updateAppointment(Long appointmentId, AppointmentRequestDTO appointmentRequestDTO);

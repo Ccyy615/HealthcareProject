@@ -37,20 +37,20 @@ public class AppointmentServiceImpl implements AppointmentService{
         return AppointmentMapper.toResponseDTO(appointment);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<AppointmentResponseDTO> getAppointmentsByDoctorId(DoctorIdentifier doctorId) {
-
-        List<Appointment> appointments = appointmentRepository.findByClinic_DoctorId(doctorId);
-
-        if (appointments.isEmpty()) {
-            throw new ResourceNotFoundException(
-                    "No appointments found for doctorId: " + doctorId
-            );
-        }
-
-        return AppointmentMapper.toResponseDTOList(appointments);
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public List<AppointmentResponseDTO> getAppointmentsByDoctorId(DoctorIdentifier doctorId) {
+//
+//        List<Appointment> appointments = appointmentRepository.findByClinic_DoctorId(doctorId);
+//
+//        if (appointments.isEmpty()) {
+//            throw new ResourceNotFoundException(
+//                    "No appointments found for doctorId: " + doctorId
+//            );
+//        }
+//
+//        return AppointmentMapper.toResponseDTOList(appointments);
+//    }
 
 
     @Override
