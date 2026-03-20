@@ -27,9 +27,9 @@ public class DoctorMapper {
                 .doctorFirstName(doctorRequestDTO.getDoctorFirstName())
                 .doctorLastName(doctorRequestDTO.getDoctorLastName())
                 .workZone(workZone)
-                .speciality(speciality)
-                .isActive(true)
-                .isValid(true)
+                .speciality(speciality != null ? speciality : new java.util.ArrayList<>())
+                .isActive(false)
+                .isValid(false)
                 .license(null)
                 .build();
 

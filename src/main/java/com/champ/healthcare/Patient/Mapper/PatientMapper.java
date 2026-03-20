@@ -1,6 +1,9 @@
 package com.champ.healthcare.Patient.Mapper;
 
-import com.champ.healthcare.Patient.Domain.*;
+import com.champ.healthcare.Patient.Domain.Address;
+import com.champ.healthcare.Patient.Domain.Allergy;
+import com.champ.healthcare.Patient.Domain.Patient;
+import com.champ.healthcare.Patient.Domain.PatientIdentifier;
 import com.champ.healthcare.Patient.PresentationLayer.PatientRequestDTO;
 import com.champ.healthcare.Patient.PresentationLayer.PatientResponseDTO;
 import org.springframework.stereotype.Component;
@@ -13,11 +16,10 @@ public class PatientMapper {
         Address address = new Address(
                 patientRequestDTO.getAddress().getStreet(),
                 patientRequestDTO.getAddress().getCity(),
-                patientRequestDTO.getAddress().getPostal_code(),
                 patientRequestDTO.getAddress().getProvince(),
+                patientRequestDTO.getAddress().getPostal_code(),
                 patientRequestDTO.getAddress().getCountry()
         );
-
 
         Allergy allergy = new Allergy(
                 patientRequestDTO.getAllergy().getSubstance(),
@@ -36,11 +38,12 @@ public class PatientMapper {
                 .bloodType(patientRequestDTO.getBloodType())
                 .status(patientRequestDTO.getStatus())
                 .build();
-
     }
 
-    public PatientResponseDTO  toResponseDTO(Patient patient) {
+    public PatientResponseDTO toResponseDTO(Patient patient) {
         PatientResponseDTO patientResponseDTO = new PatientResponseDTO();
+
+        patientResponseDTO.setId(patient.getId());
         patientResponseDTO.setPatientId(patient.getPatientId());
         patientResponseDTO.setFullName(patient.getFullName());
         patientResponseDTO.setDateOfBirth(patient.getDateOfBirth());
@@ -54,5 +57,4 @@ public class PatientMapper {
 
         return patientResponseDTO;
     }
-
 }

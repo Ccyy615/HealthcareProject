@@ -1,6 +1,7 @@
 package com.champ.healthcare.Patient.BusinessLogicLayer;
 
 import com.champ.healthcare.Patient.DataAccessLayer.PatientRepository;
+import com.champ.healthcare.Patient.Domain.ContactInfo;
 import com.champ.healthcare.Patient.Domain.Patient;
 import com.champ.healthcare.Patient.Mapper.PatientMapper;
 import com.champ.healthcare.Patient.PresentationLayer.PatientRequestDTO;
@@ -43,12 +44,19 @@ public class PatientServiceImpl implements PatientService {
     @Override
     @Transactional
     public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
-        log.info("Creating patient for email: {}", patientRequestDTO.getContactInfo().getEmail());
+        log.info("Creating patient for email: {}", patientRequestDTO.getContactInfo() != null
+                ? patientRequestDTO.getContactInfo().getEmail()
+                : null);
 
-        if (patientRepository.existsByContactInfoEmail(patientRequestDTO.getContactInfo().getEmail())) {
-            throw new DuplicateEmailException(
-                    "Email already exists: " + patientRequestDTO.getContactInfo().getEmail()
-            );
+        validatePatientInvariant(patientRequestDTO);
+
+        String email = patientRequestDTO.getContactInfo() != null
+                ? patientRequestDTO.getContactInfo().getEmail()
+                : null;
+
+        if (email != null && !email.isBlank()
+                && patientRepository.existsByContactInfoEmail(email)) {
+            throw new DuplicateEmailException("Email already exists: " + email);
         }
 
         Patient patient = patientMapper.toEntity(patientRequestDTO);
@@ -61,20 +69,26 @@ public class PatientServiceImpl implements PatientService {
     public PatientResponseDTO updatePatient(Long id, PatientRequestDTO patientRequestDTO) {
         log.info("Updating patient for id: {}", id);
 
+        validatePatientInvariant(patientRequestDTO);
+
         Patient existingPatient = patientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + id));
 
-        String newEmail = patientRequestDTO.getContactInfo().getEmail();
-        String currentEmail = existingPatient.getContactInfo().getEmail();
+        String newEmail = patientRequestDTO.getContactInfo() != null
+                ? patientRequestDTO.getContactInfo().getEmail()
+                : null;
 
-        if (!currentEmail.equals(newEmail)
+        String currentEmail = existingPatient.getContactInfo() != null
+                ? existingPatient.getContactInfo().getEmail()
+                : null;
+
+        if (newEmail != null && !newEmail.isBlank()
+                && !newEmail.equals(currentEmail)
                 && patientRepository.existsByContactInfoEmail(newEmail)) {
             throw new DuplicateEmailException("Email already exists: " + newEmail);
         }
 
         Patient updatedPatientData = patientMapper.toEntity(patientRequestDTO);
-
-        // Keep the same database ID and same business UUID
         updatedPatientData.setId(existingPatient.getId());
         updatedPatientData.setPatientId(existingPatient.getPatientId());
 
@@ -92,5 +106,24 @@ public class PatientServiceImpl implements PatientService {
 
         patientRepository.delete(patient);
         return patientMapper.toResponseDTO(patient);
+    }
+
+    private void validatePatientInvariant(PatientRequestDTO patientRequestDTO) {
+        ContactInfo contactInfo = patientRequestDTO.getContactInfo();
+
+        if (contactInfo == null) {
+            throw new IllegalArgumentException(
+                    "Patient must have at least one valid contact method: email or phone."
+            );
+        }
+
+        boolean hasEmail = contactInfo.getEmail() != null && !contactInfo.getEmail().isBlank();
+        boolean hasPhone = contactInfo.getPhone() != null && !contactInfo.getPhone().isBlank();
+
+        if (!hasEmail && !hasPhone) {
+            throw new IllegalArgumentException(
+                    "Patient must have at least one valid contact method: email or phone."
+            );
+        }
     }
 }
