@@ -1,13 +1,12 @@
 package com.champ.healthcare.Appointment.Domain;
 
-import com.champ.healthcare.ClinicAvailability.Domain.ClinicSchedule;
+import com.champ.healthcare.ClinicRoom.Domain.ClinicRoomIdentifier;
 import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
 import com.champ.healthcare.Patient.Domain.PatientIdentifier;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "appointments")
@@ -23,20 +22,26 @@ public class Appointment {
     @Column(name = "appointment_id")
     private Long appointmentId;
 
-
     @Embedded
+    @AttributeOverride(
+            name = "patientId",
+            column = @Column(name = "patient_id", nullable = false)
+    )
     private PatientIdentifier patientId;
 
-//    @Column(name = "doctor_id", columnDefinition = "BINARY(16)", nullable = false)
-//    private DoctorIdentifier doctorId;
-
-//    @ManyToOne(optional = false)
-//    @JoinColumn(name = "clinic_id")
-//    private ClinicSchedule clinic;
-
-    @JoinColumn(name = "doctor_id")
+    @Embedded
+    @AttributeOverride(
+            name = "doctorId",
+            column = @Column(name = "doctor_id", nullable = false)
+    )
     private DoctorIdentifier doctorId;
 
+    @Embedded
+    @AttributeOverride(
+            name = "roomId",
+            column = @Column(name = "room_id", nullable = false)
+    )
+    private ClinicRoomIdentifier roomId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "appointment_status", nullable = false)
@@ -47,60 +52,25 @@ public class Appointment {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name="startTime", column=@Column(name="appointment_start")),
-            @AttributeOverride(name="endTime", column=@Column(name="appointment_end"))
+            @AttributeOverride(name = "startTime", column = @Column(name = "appointment_start", nullable = false)),
+            @AttributeOverride(name = "endTime", column = @Column(name = "appointment_end", nullable = false))
     })
     private TimeSlot timeSlot;
 
     @Column(name = "descriptions", length = 5000)
     private String description;
 
-//         /**
-//     *******************************
-//     *******************************
-//     **/
+    public void validateTimeSlot() {
+        if (timeSlot == null) {
+            throw new IllegalArgumentException("Appointment time slot is required.");
+        }
+        timeSlot.validate();
+    }
 
-
-
-
-
-//    public DoctorIdentifier getDoctorId() {
-//        if (clinic == null) {
-//            throw new IllegalStateException("Clinic is not assigned to this appointment");
-//        }
-//        return clinic.getDoctorId();
-//    }
-
-//    public void confirmAppointment() {
-//
-//        if (this.clinic == null) {
-//            throw new IllegalStateException("Clinic cannot be null");
-//        }
-//
-//        if (!clinic.isSlotAvailable(this.timeSlot)) {
-//            throw new IllegalStateException(
-//                    "Cannot confirm appointment: time slot is outside clinic hours or blocked"
-//            );
-//        }
-//
-//        this.status = AppointmentStatus.CONFIRMED;
-//    }
-
-
-
-//    public void confirmAppointment(ClinicSchedule clinic) {
-//        if (clinic == null) {
-//            throw new IllegalArgumentException("Clinic cannot be null");
-//        }
-//
-//        if (!clinic.isSlotAvailable(this.timeSlot)) {
-//            throw new IllegalStateException(
-//                    "Cannot confirm appointment: time slot is outside clinic hours or blocked"
-//            );
-//        }
-//
-//        this.status = AppointmentStatus.CONFIRMED;
-//    }
-
-
+    public boolean overlapsWith(Appointment other) {
+        if (other == null || other.getTimeSlot() == null || this.timeSlot == null) {
+            return false;
+        }
+        return this.timeSlot.overlaps(other.getTimeSlot());
+    }
 }

@@ -1,7 +1,7 @@
 package com.champ.healthcare.Doctor.PresentationLayer;
 
 import com.champ.healthcare.Doctor.BusinessLogicLayer.DoctorService;
-import com.champ.healthcare.Doctor.Domain.*;
+import com.champ.healthcare.Doctor.Domain.Speciality;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/doctors")
@@ -25,7 +24,7 @@ public class DoctorController {
     }
 
     @GetMapping("/{doctorId}")
-    public ResponseEntity<DoctorResponseDTO> getDoctorById(@PathVariable UUID doctorId) {
+    public ResponseEntity<DoctorResponseDTO> getDoctorById(@PathVariable String doctorId) {
         DoctorResponseDTO response = doctorService.getDoctorById(doctorId);
         return ResponseEntity.ok(response);
     }
@@ -39,20 +38,17 @@ public class DoctorController {
 
     @PutMapping("/{doctorId}")
     public ResponseEntity<DoctorResponseDTO> updateDoctor(
-            @PathVariable UUID doctorId,
-            @Valid @RequestBody DoctorRequestDTO doctorRequestDTO){
+            @PathVariable String doctorId,
+            @Valid @RequestBody DoctorRequestDTO doctorRequestDTO) {
         DoctorResponseDTO response = doctorService.updateDoctor(doctorId, doctorRequestDTO);
         return ResponseEntity.ok(response);
     }
-
-    ////////////
 
     @GetMapping("/active")
     public ResponseEntity<List<DoctorResponseDTO>> getActiveDoctors() {
         List<DoctorResponseDTO> response = doctorService.getActiveDoctors();
         return ResponseEntity.ok(response);
     }
-
 
     @GetMapping("/active/speciality/{specialityName}")
     public ResponseEntity<List<DoctorResponseDTO>> getActiveDoctorBySpeciality(
@@ -61,24 +57,21 @@ public class DoctorController {
         return ResponseEntity.ok(response);
     }
 
-
     @PostMapping("/{doctorId}/activate")
-    public ResponseEntity<DoctorResponseDTO> activateDoctor(
-            @PathVariable UUID doctorId) {
+    public ResponseEntity<DoctorResponseDTO> activateDoctor(@PathVariable String doctorId) {
         DoctorResponseDTO response = doctorService.activateDoctor(doctorId);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{doctorId}/deactivate")
-    public ResponseEntity<DoctorResponseDTO> deactivateDoctor(
-            @PathVariable UUID doctorId) {
+    public ResponseEntity<DoctorResponseDTO> deactivateDoctor(@PathVariable String doctorId) {
         DoctorResponseDTO response = doctorService.deactivateDoctor(doctorId);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{doctorId}/speciality")
     public ResponseEntity<DoctorResponseDTO> addSpeciality(
-            @PathVariable UUID doctorId,
+            @PathVariable String doctorId,
             @Valid @RequestBody Speciality specialityDTO) {
         DoctorResponseDTO response = doctorService.addSpeciality(doctorId, specialityDTO);
         return ResponseEntity.ok(response);
@@ -86,7 +79,7 @@ public class DoctorController {
 
     @DeleteMapping("/{doctorId}/speciality/{specialityName}")
     public ResponseEntity<DoctorResponseDTO> removeSpeciality(
-            @PathVariable UUID doctorId,
+            @PathVariable String doctorId,
             @PathVariable String specialityName) {
         DoctorResponseDTO response = doctorService.removeSpeciality(doctorId, specialityName);
         return ResponseEntity.ok(response);
@@ -94,15 +87,14 @@ public class DoctorController {
 
     @PostMapping("/{doctorId}/license")
     public ResponseEntity<DoctorResponseDTO> addLicense(
-            @PathVariable UUID doctorId,
+            @PathVariable String doctorId,
             @Valid @RequestBody LicenseRequestDTO requestDTO) {
         DoctorResponseDTO response = doctorService.addLicense(doctorId, requestDTO);
         return ResponseEntity.ok(response);
     }
 
-
-    @DeleteMapping("/{handymanId}")
-    public ResponseEntity<Void> deleteDoctor(@PathVariable UUID doctorId) {
+    @DeleteMapping("/{doctorId}")
+    public ResponseEntity<Void> deleteDoctor(@PathVariable String doctorId) {
         doctorService.deleteDoctor(doctorId);
         return ResponseEntity.noContent().build();
     }

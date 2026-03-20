@@ -6,13 +6,13 @@ import com.champ.healthcare.Patient.Mapper.PatientMapper;
 import com.champ.healthcare.Patient.PresentationLayer.PatientRequestDTO;
 import com.champ.healthcare.Patient.PresentationLayer.PatientResponseDTO;
 import com.champ.healthcare.utilities.DuplicateEmailException;
+import com.champ.healthcare.utilities.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,73 +33,64 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional(readOnly = true)
-    public PatientResponseDTO getPatientById(UUID id) {
+    public PatientResponseDTO getPatientById(Long id) {
         Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + id));
 
         return patientMapper.toResponseDTO(patient);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
         log.info("Creating patient for email: {}", patientRequestDTO.getContactInfo().getEmail());
 
         if (patientRepository.existsByContactInfoEmail(patientRequestDTO.getContactInfo().getEmail())) {
-            throw new DuplicateEmailException("Email already exists: " + patientRequestDTO.getContactInfo().getEmail());
+            throw new DuplicateEmailException(
+                    "Email already exists: " + patientRequestDTO.getContactInfo().getEmail()
+            );
         }
+
         Patient patient = patientMapper.toEntity(patientRequestDTO);
         Patient savedPatient = patientRepository.save(patient);
         return patientMapper.toResponseDTO(savedPatient);
-
     }
 
     @Override
     @Transactional
-    public PatientResponseDTO updatePatient(UUID id, PatientRequestDTO patientRequestDTO) {
+    public PatientResponseDTO updatePatient(Long id, PatientRequestDTO patientRequestDTO) {
         log.info("Updating patient for id: {}", id);
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
 
-        if (!patient.getContactInfo().getEmail().equals(patientRequestDTO.getContactInfo().getEmail())) {
-            if (patientRepository.existsByContactInfoEmail(patientRequestDTO.getContactInfo().getEmail())) {
-                throw new DuplicateEmailException("Email already exists: " + patientRequestDTO.getContactInfo().getEmail());
-            }
-            patient.updateEmail(patientRequestDTO.getContactInfo().getEmail());
+        Patient existingPatient = patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + id));
+
+        String newEmail = patientRequestDTO.getContactInfo().getEmail();
+        String currentEmail = existingPatient.getContactInfo().getEmail();
+
+        if (!currentEmail.equals(newEmail)
+                && patientRepository.existsByContactInfoEmail(newEmail)) {
+            throw new DuplicateEmailException("Email already exists: " + newEmail);
         }
 
-        Patient patientProfile = patientMapper.toEntity(patientRequestDTO);
-        patientProfile.setId(patient.getId());
-        Patient updatedPatient = patientRepository.save(patientProfile);
-        return patientMapper.toResponseDTO(updatedPatient);
+        Patient updatedPatientData = patientMapper.toEntity(patientRequestDTO);
+
+        // Keep the same database ID and same business UUID
+        updatedPatientData.setId(existingPatient.getId());
+        updatedPatientData.setPatientId(existingPatient.getPatientId());
+
+        Patient savedPatient = patientRepository.save(updatedPatientData);
+        return patientMapper.toResponseDTO(savedPatient);
     }
 
     @Override
     @Transactional
-    public PatientResponseDTO deletePatientById(UUID id) {
+    public PatientResponseDTO deletePatientById(Long id) {
         log.info("Deleting patient for id: {}", id);
+
         Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + id));
 
         patientRepository.delete(patient);
         return patientMapper.toResponseDTO(patient);
     }
-
-//    private PatientResponseDTO toResponseDTO(Patient patient) {
-//        return new PatientResponseDTO(
-//                patient.getId(),
-//                patient.getPatientId().getPatientId(),
-//                patient.getFullName(),
-//                patient.getDateOfBirth(),
-//                patient.getGender(),
-//                patient.getContactInfo().getEmail(),
-//                patient.getContactInfo().getPhone(),
-//                patient.getContactInfo().getAddress(),
-//                patient.getInsuranceNumber(),
-//                patient.getAllergy().getSubstance(),
-//                patient.getAllergy().getReaction(),
-//                patient.getBloodType(),
-//                patient.getStatus()
-//        );
-//    }
 }

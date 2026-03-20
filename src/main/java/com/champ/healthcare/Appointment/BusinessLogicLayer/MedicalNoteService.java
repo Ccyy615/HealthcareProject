@@ -46,13 +46,13 @@ public class MedicalNoteService {
                 .findByNoteId(noteId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Note not found with ID: " + noteId));
-        MedicalNote updateNote = MedicalNoteMapper.toEntity(dto);
-        updateNote.setNoteId(noteId);
-        updateNote.setNoteText(note.getNoteText());
-        updateNote.setNoteType(note.getNoteType());
 
-        MedicalNote saveNote = medicalNoteRepository.save(updateNote);
-        return MedicalNoteMapper.toResponseDTO(saveNote);
+        note.setNoteText(dto.getNoteText());
+        note.setNoteType(dto.getNoteType());
+        note.setLastUpdatedAt(java.time.LocalDateTime.now());
+
+        MedicalNote savedNote = medicalNoteRepository.save(note);
+        return MedicalNoteMapper.toResponseDTO(savedNote);
     }
 
     @Transactional

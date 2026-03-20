@@ -1,13 +1,11 @@
 package com.champ.healthcare.Appointment.PresentationLayer;
 
 import com.champ.healthcare.Appointment.BusinessLogicLayer.AppointmentService;
-import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/appointments")
@@ -22,46 +20,52 @@ public class AppointmentController {
     }
 
     @GetMapping("/{appointment_id}")
-    public ResponseEntity<AppointmentResponseDTO> getAppointmentById(@PathVariable Long appointmentId) {
+    public ResponseEntity<AppointmentResponseDTO> getAppointmentById(
+            @PathVariable("appointment_id") Long appointmentId
+    ) {
         return ResponseEntity.ok(appointmentService.getAppointmentById(appointmentId));
     }
 
-    @GetMapping("/{doctorId}")
-    public List<AppointmentResponseDTO> getAppointmentsByDoctorId(@PathVariable String doctorId) {
-
-        DoctorIdentifier doctorIdentifier = new DoctorIdentifier(doctorId);
-
-        return appointmentService.getAppointmentsByDoctorId(doctorIdentifier);
+    @GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentsByDoctorId(
+            @PathVariable String doctorId
+    ) {
+        return ResponseEntity.ok(appointmentService.getAppointmentsByDoctorId(doctorId));
     }
 
-
     @PostMapping
-    public ResponseEntity<AppointmentResponseDTO> createAppointment(@RequestBody AppointmentRequestDTO dto) {
+    public ResponseEntity<AppointmentResponseDTO> createAppointment(
+            @RequestBody AppointmentRequestDTO dto
+    ) {
         return ResponseEntity.ok(appointmentService.createAppointment(dto));
     }
 
     @PutMapping("/{appointment_id}")
-    public ResponseEntity<AppointmentResponseDTO> updateAppointment(@PathVariable Long appointmentId, @RequestBody AppointmentRequestDTO dto) {
+    public ResponseEntity<AppointmentResponseDTO> updateAppointment(
+            @PathVariable("appointment_id") Long appointmentId,
+            @RequestBody AppointmentRequestDTO dto
+    ) {
         return ResponseEntity.ok(appointmentService.updateAppointment(appointmentId, dto));
     }
 
     @DeleteMapping("/{appointment_id}")
-    public ResponseEntity<AppointmentResponseDTO> deleteAppointment(@PathVariable Long appointmentId) {
+    public ResponseEntity<AppointmentResponseDTO> deleteAppointment(
+            @PathVariable("appointment_id") Long appointmentId
+    ) {
         return ResponseEntity.ok(appointmentService.deleteAppointment(appointmentId));
     }
 
-    //Status
-
     @PatchMapping("/{appointment_id}/complete")
-    public ResponseEntity<AppointmentResponseDTO> completeAppointment(@PathVariable Long appointmentId) {
+    public ResponseEntity<AppointmentResponseDTO> completeAppointment(
+            @PathVariable("appointment_id") Long appointmentId
+    ) {
         return ResponseEntity.ok(appointmentService.completeAppointment(appointmentId));
     }
 
     @PatchMapping("/{appointment_id}/cancel")
-    public ResponseEntity<AppointmentResponseDTO> cancelAppointment(@PathVariable Long appointmentId) {
+    public ResponseEntity<AppointmentResponseDTO> cancelAppointment(
+            @PathVariable("appointment_id") Long appointmentId
+    ) {
         return ResponseEntity.ok(appointmentService.cancelAppointment(appointmentId));
     }
-
-
-
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Table(name = "patients")
@@ -33,18 +32,18 @@ public class Patient {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name="email", column=@Column(name="contact_email")),
-            @AttributeOverride(name="phone", column=@Column(name="contact_phone"))
+            @AttributeOverride(name = "email", column = @Column(name = "contact_email")),
+            @AttributeOverride(name = "phone", column = @Column(name = "contact_phone"))
     })
     private ContactInfo contactInfo;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name="street", column=@Column(name="street")),
-            @AttributeOverride(name="city", column=@Column(name="city")),
-            @AttributeOverride(name="province", column=@Column(name="province")),
-            @AttributeOverride(name="postal_code", column=@Column(name="postal_code")),
-            @AttributeOverride(name="country", column=@Column(name="country"))
+            @AttributeOverride(name = "street", column = @Column(name = "street")),
+            @AttributeOverride(name = "city", column = @Column(name = "city")),
+            @AttributeOverride(name = "province", column = @Column(name = "province")),
+            @AttributeOverride(name = "postal_code", column = @Column(name = "postal_code")),
+            @AttributeOverride(name = "country", column = @Column(name = "country"))
     })
     private Address address;
 
@@ -53,8 +52,8 @@ public class Patient {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name="substance", column=@Column(name="allergy_substance")),
-            @AttributeOverride(name="reaction", column=@Column(name="allergy_reaction"))
+            @AttributeOverride(name = "substance", column = @Column(name = "allergy_substance")),
+            @AttributeOverride(name = "reaction", column = @Column(name = "allergy_reaction"))
     })
     private Allergy allergy;
 
@@ -102,7 +101,6 @@ public class Patient {
         this.status = PatientStatus.ACTIVE;
     }
 
-
     public void updateEmail(String newEmail) {
         validateEmail(newEmail);
         if (this.contactInfo == null) {
@@ -111,8 +109,13 @@ public class Patient {
         this.contactInfo.setEmail(newEmail);
     }
 
-
     private void validateContactInfo(ContactInfo contactInfo) {
+        if (contactInfo == null) {
+            throw new IllegalArgumentException(
+                    "Patient must have at least one valid contact method: email or phone."
+            );
+        }
+
         boolean hasEmail = contactInfo.getEmail() != null && !contactInfo.getEmail().isBlank();
         boolean hasPhone = contactInfo.getPhone() != null && !contactInfo.getPhone().isBlank();
 
@@ -131,5 +134,4 @@ public class Patient {
             throw new IllegalArgumentException("Invalid email format");
         }
     }
-
 }

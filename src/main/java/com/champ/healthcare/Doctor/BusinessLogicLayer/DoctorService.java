@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,9 +37,8 @@ public class DoctorService {
                 .collect(Collectors.toList());
     }
 
-
     @Transactional(readOnly = true)
-    public DoctorResponseDTO getDoctorById(UUID doctorId) {
+    public DoctorResponseDTO getDoctorById(String doctorId) {
         log.info("Fetching doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
@@ -51,59 +51,61 @@ public class DoctorService {
 
     @Transactional
     public DoctorResponseDTO createDoctor(DoctorRequestDTO requestDTO) {
-
         Doctor doctor = doctorMapper.toEntity(requestDTO);
-        log.info("Handyman profile created with ID: {}",
-                doctor.getDoctorId().getDoctorId());
+
+        log.info("Doctor profile created with ID: {}", doctor.getDoctorId().getDoctorId());
 
         Doctor savedDoctor = doctorRepository.save(doctor);
-        log.info("Doctor saved with ID: {}",
-                savedDoctor.getDoctorId().getDoctorId());
+
+        log.info("Doctor saved with ID: {}", savedDoctor.getDoctorId().getDoctorId());
         return doctorMapper.toResponseDTO(savedDoctor);
     }
 
     @Transactional
-    public DoctorResponseDTO updateDoctor(UUID doctorId, DoctorRequestDTO requestDTO) {
+    public DoctorResponseDTO updateDoctor(String doctorId, DoctorRequestDTO requestDTO) {
         log.info("Updating doctor with ID: {}", doctorId);
 
-        Doctor doctor = doctorRepository
+        Doctor existingDoctor = doctorRepository
                 .findByDoctorId_DoctorId(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Doctor not found with ID: " + doctorId));
-        log.info("Doctor found with ID: {}",
-                doctor.getDoctorId().getDoctorId());
 
-        Doctor doctorProfile = doctorMapper.toEntity(requestDTO);
-        doctorProfile.setId(doctor.getId()); //keep same id
-        Doctor updatedDoctor = doctorRepository.save(doctorProfile);
-        return doctorMapper.toResponseDTO(updatedDoctor);
+        Doctor updatedDoctorData = doctorMapper.toEntity(requestDTO);
+
+        // Keep existing identifiers and state
+        updatedDoctorData.setId(existingDoctor.getId());
+        updatedDoctorData.setDoctorId(existingDoctor.getDoctorId());
+        updatedDoctorData.setIsActive(existingDoctor.getIsActive());
+        updatedDoctorData.setIsValid(existingDoctor.getIsValid());
+        updatedDoctorData.setLicense(existingDoctor.getLicense());
+
+        Doctor savedDoctor = doctorRepository.save(updatedDoctorData);
+        return doctorMapper.toResponseDTO(savedDoctor);
     }
-
 
     @Transactional(readOnly = true)
     public List<DoctorResponseDTO> getActiveDoctors() {
-        log.info("Fetching active doctor");
+        log.info("Fetching active doctors");
 
         return doctorRepository.findByIsActiveTrue().stream()
                 .map(doctorMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-
     @Transactional(readOnly = true)
     public List<DoctorResponseDTO> getActiveDoctorBySpeciality(String specialityName) {
-        log.info("Fetching active handymen with speciality: {}", specialityName);
+        log.info("Fetching active doctors with speciality: {}", specialityName);
+
         List<Speciality> specialities = new ArrayList<>();
-        specialities.add(new Speciality(specialityName, null) );
-        return doctorRepository.findActiveDoctorBySpeciality(
-                        specialities).stream()
+        specialities.add(new Speciality(specialityName, null));
+
+        return doctorRepository.findByIsActiveTrueAndSpecialityIn(specialities).stream()
                 .map(doctorMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-
     @Transactional
-    public DoctorResponseDTO activateDoctor(UUID doctorId) {
+    public DoctorResponseDTO activateDoctor(String doctorId) {
         log.info("Activating doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
@@ -112,10 +114,10 @@ public class DoctorService {
                         "Doctor not found with ID: " + doctorId));
 
         try {
-            doctor.activate(); // This enforces the invariant
-            Doctor saveDoctor = doctorRepository.save(doctor);
+            doctor.activate();
+            Doctor savedDoctor = doctorRepository.save(doctor);
             log.info("Doctor activated successfully: {}", doctorId);
-            return doctorMapper.toResponseDTO(saveDoctor);
+            return doctorMapper.toResponseDTO(savedDoctor);
         } catch (DoctorNotEligibleException e) {
             log.error("Failed to activate doctor {}: {}", doctorId, e.getMessage());
             throw e;
@@ -123,7 +125,7 @@ public class DoctorService {
     }
 
     @Transactional
-    public DoctorResponseDTO deactivateDoctor(UUID doctorId) {
+    public DoctorResponseDTO deactivateDoctor(String doctorId) {
         log.info("Deactivating doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
@@ -139,15 +141,19 @@ public class DoctorService {
     }
 
     @Transactional
-    public DoctorResponseDTO addSpeciality(UUID doctorId, Speciality specialityDTO) {
-        log.info("Adding skill {} to handyman {}", specialityDTO.getSpeciality(), doctorId);
+    public DoctorResponseDTO addSpeciality(String doctorId, Speciality specialityDTO) {
+        log.info("Adding speciality {} to doctor {}", specialityDTO.getSpeciality(), doctorId);
 
         Doctor doctor = doctorRepository
                 .findByDoctorId_DoctorId(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Doctor not found with ID: " + doctorId));
 
-        Speciality speciality = new Speciality(specialityDTO.getSpeciality(), specialityDTO.getProficiencyLevel());
+        Speciality speciality = new Speciality(
+                specialityDTO.getSpeciality(),
+                specialityDTO.getProficiencyLevel()
+        );
+
         doctor.addSpeciality(speciality);
 
         Doctor savedDoctor = doctorRepository.save(doctor);
@@ -155,8 +161,8 @@ public class DoctorService {
     }
 
     @Transactional
-    public DoctorResponseDTO removeSpeciality(UUID doctorId, String specialityName) {
-        log.info("Removing skill {} from handyman {}", specialityName, doctorId);
+    public DoctorResponseDTO removeSpeciality(String doctorId, String specialityName) {
+        log.info("Removing speciality {} from doctor {}", specialityName, doctorId);
 
         Doctor doctor = doctorRepository
                 .findByDoctorId_DoctorId(doctorId)
@@ -170,8 +176,8 @@ public class DoctorService {
     }
 
     @Transactional
-    public DoctorResponseDTO addLicense(UUID doctorId, LicenseRequestDTO requestDTO) {
-        log.info("Add a license for doctor {}", doctorId);
+    public DoctorResponseDTO addLicense(String doctorId, LicenseRequestDTO requestDTO) {
+        log.info("Adding a license for doctor {}", doctorId);
 
         Doctor doctor = doctorRepository
                 .findByDoctorId_DoctorId(doctorId)
@@ -186,12 +192,12 @@ public class DoctorService {
 
         doctor.setLicense(license);
 
-        Doctor sacedDoctor = doctorRepository.save(doctor);
-        return doctorMapper.toResponseDTO(sacedDoctor);
+        Doctor savedDoctor = doctorRepository.save(doctor);
+        return doctorMapper.toResponseDTO(savedDoctor);
     }
 
     @Transactional
-    public void deleteDoctor(UUID doctorId) {
+    public void deleteDoctor(String doctorId) {
         log.info("Deleting doctor with ID: {}", doctorId);
 
         Doctor doctor = doctorRepository
@@ -202,6 +208,4 @@ public class DoctorService {
         doctorRepository.delete(doctor);
         log.info("Doctor deleted successfully: {}", doctorId);
     }
-
-
 }

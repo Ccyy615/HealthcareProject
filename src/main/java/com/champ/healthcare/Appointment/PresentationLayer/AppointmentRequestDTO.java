@@ -1,20 +1,12 @@
 package com.champ.healthcare.Appointment.PresentationLayer;
 
 import com.champ.healthcare.Appointment.Domain.AppointmentStatus;
-import com.champ.healthcare.Appointment.Domain.TimeSlot;
-import com.champ.healthcare.ClinicAvailability.Domain.ClinicSchedule;
-import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
-import com.champ.healthcare.Patient.Domain.PatientIdentifier;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -22,16 +14,15 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AppointmentRequestDTO {
 
-    private AppointmentStatus status;
-    private LocalDateTime createdAt;
-    private TimeSlot timeSlot;
+    private String patientId;
+    private String doctorId;
+    private String roomId;
+
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+
     private String description;
 
-//    private ClinicSchedule clinicId;
-    private DoctorIdentifier doctorId;
-    private PatientIdentifier patientId;
-
-
-
-
+    // optional; if null we will default to CONFIRMED
+    private AppointmentStatus status;
 }
