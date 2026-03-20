@@ -32,7 +32,7 @@ public class License {
 
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id", referencedColumnName = "doctor_id")
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
     public License(String licenseName,LicenseStatus status, LocalDateTime performedDate) {

@@ -49,7 +49,7 @@ public class Doctor {
             name = "doctor_specialities",
             joinColumns = @JoinColumn(
                     name = "doctor_id",
-                    referencedColumnName = "doctor_id"
+                    referencedColumnName = "id"
             )
     )
     private List<Speciality> speciality = new ArrayList<>();

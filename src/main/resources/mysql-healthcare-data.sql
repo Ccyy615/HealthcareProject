@@ -51,15 +51,19 @@ INSERT INTO doctors(
 ) VALUES
     (1, 'e1f2a3b4-c5d6-47e8-9f01-23456789abcd', 'John', 'Smith', TRUE, TRUE, 'Montreal', 'Quebec');
 
+-- IMPORTANT:
+-- doctor_specialities.doctor_id now references doctors.id (numeric PK), not doctors.doctor_id (UUID string)
 INSERT INTO doctor_specialities(
     doctor_id, speciality_name, proficiency_level
 ) VALUES
-    ('e1f2a3b4-c5d6-47e8-9f01-23456789abcd', 'General Practice', 3);
+    (1, 'General Practice', 3);
 
+-- IMPORTANT:
+-- doctor_license.doctor_id now references doctors.id (numeric PK), not doctors.doctor_id (UUID string)
 INSERT INTO doctor_license(
     license_id, license_name, doctor_id, status, performed_date, expiry_date
 ) VALUES
-    (24001, 'General Practice License', 'e1f2a3b4-c5d6-47e8-9f01-23456789abcd', 0, '2022-01-15 00:00:00', '2027-01-15 00:00:00');
+    (24001, 'General Practice License', 1, 0, '2022-01-15 00:00:00', '2027-01-15 00:00:00');
 
 
 -- //////////////////////////////////////////
@@ -77,7 +81,7 @@ INSERT INTO clinic_rooms(
 
 -- //////////////////////////////////////////
 -- Data for booking appointment
--- Double-booking is now checked on room_id + overlapping time
+-- Double-booking is checked in Appointment on room_id + overlapping time
 -- //////////////////////////////////////////
 
 INSERT INTO appointments(
@@ -143,8 +147,8 @@ INSERT INTO appointments(
 
 
 -- //////////////////////////////////////////
--- Data for medical note
--- Keep this only if your MedicalNote mapping starts cleanly
+-- Data for medical notes
+-- Keep this only if MedicalNote mapping starts cleanly
 -- //////////////////////////////////////////
 
 INSERT INTO medical_notes(
@@ -168,24 +172,24 @@ INSERT INTO medical_notes(
        'FOLLOW_UP'),
 
       (3, 3,
-       'e3f4a5b6-c7d8-e9f0-a1b2-c3d4e5f6a7b8',
        'e1f2a3b4-c5d6-47e8-9f01-23456789abcd',
+       'e3f4a5b6-c7d8-e9f0-a1b2-c3d4e5f6a7b8',
        'Routine blood pressure check. Patient advised to reduce salt intake.',
        '2026-03-17 14:35:00',
        '2026-03-17 14:35:00',
        'PRESCRIPTION'),
 
       (4, 4,
-       'f4a5b6c7-d8e9-f0a1-b2c3-d4e5f6a7b8c9',
        'e1f2a3b4-c5d6-47e8-9f01-23456789abcd',
+       'f4a5b6c7-d8e9-f0a1-b2c3-d4e5f6a7b8c9',
        'Appointment cancelled by patient due to illness.',
        '2026-03-19 11:35:00',
        '2026-03-19 11:35:00',
        'FOLLOW_UP'),
 
       (5, 5,
-       'a5b6c7d8-e9f0-a1b2-c3d4-e5f6a7b8c9d0',
        'e1f2a3b4-c5d6-47e8-9f01-23456789abcd',
+       'a5b6c7d8-e9f0-a1b2-c3d4-e5f6a7b8c9d0',
        'Patient presented with mild skin irritation on forearm. Prescribed topical cream.',
        '2026-03-20 15:35:00',
        '2026-03-20 15:35:00',
