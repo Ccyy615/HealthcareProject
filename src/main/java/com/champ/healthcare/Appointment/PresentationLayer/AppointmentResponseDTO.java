@@ -12,9 +12,18 @@ import java.time.LocalDateTime;
 public class AppointmentResponseDTO {
 
     private Long appointmentId;
+
     private String patientId;
+    private String patientFullName;
+    private String patientEmail;
+
     private String doctorId;
+    private String doctorFullName;
+
     private String roomId;
+    private String roomName;
+    private String roomNumber;
+    private String roomStatus;
 
     private String status;
     private LocalDateTime createdAt;

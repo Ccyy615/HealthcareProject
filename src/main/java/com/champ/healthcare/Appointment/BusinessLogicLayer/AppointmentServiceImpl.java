@@ -10,7 +10,11 @@ import com.champ.healthcare.Appointment.PresentationLayer.AppointmentResponseDTO
 import com.champ.healthcare.ClinicRoom.DataAccessLayer.ClinicRoomRepository;
 import com.champ.healthcare.ClinicRoom.Domain.ClinicRoom;
 import com.champ.healthcare.ClinicRoom.Domain.ClinicRoomIdentifier;
+import com.champ.healthcare.Doctor.DataAccessLayer.DoctorRepository;
+import com.champ.healthcare.Doctor.Domain.Doctor;
 import com.champ.healthcare.Doctor.Domain.DoctorIdentifier;
+import com.champ.healthcare.Patient.DataAccessLayer.PatientRepository;
+import com.champ.healthcare.Patient.Domain.Patient;
 import com.champ.healthcare.Patient.Domain.PatientIdentifier;
 import com.champ.healthcare.utilities.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +31,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final ClinicRoomRepository clinicRoomRepository;
+    private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
 
     @Override
     @Transactional(readOnly = true)
     public List<AppointmentResponseDTO> getAllAppointments() {
-        return AppointmentMapper.toResponseDTOList(appointmentRepository.findAll());
+        return appointmentRepository.findAll()
+                .stream()
+                .map(this::buildEnrichedResponse)
+                .toList();
     }
 
     @Override
@@ -42,15 +51,16 @@ public class AppointmentServiceImpl implements AppointmentService {
                         "Appointment not found with ID: " + appointmentId
                 ));
 
-        return AppointmentMapper.toResponseDTO(appointment);
+        return buildEnrichedResponse(appointment);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AppointmentResponseDTO> getAppointmentsByDoctorId(String doctorId) {
-        return AppointmentMapper.toResponseDTOList(
-                appointmentRepository.findByDoctorId_DoctorId(doctorId)
-        );
+        return appointmentRepository.findByDoctorId_DoctorId(doctorId)
+                .stream()
+                .map(this::buildEnrichedResponse)
+                .toList();
     }
 
     @Override
@@ -70,7 +80,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.validateTimeSlot();
 
         Appointment savedAppointment = appointmentRepository.save(appointment);
-        return AppointmentMapper.toResponseDTO(savedAppointment);
+        return buildEnrichedResponse(savedAppointment);
     }
 
     @Override
@@ -104,7 +114,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.validateTimeSlot();
 
         Appointment savedAppointment = appointmentRepository.save(appointment);
-        return AppointmentMapper.toResponseDTO(savedAppointment);
+        return buildEnrichedResponse(savedAppointment);
     }
 
     @Override
@@ -116,7 +126,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 ));
 
         appointmentRepository.delete(appointment);
-        return AppointmentMapper.toResponseDTO(appointment);
+        return buildEnrichedResponse(appointment);
     }
 
     @Override
@@ -136,7 +146,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         appointment.setStatus(AppointmentStatus.COMPLETED);
-        return AppointmentMapper.toResponseDTO(appointmentRepository.save(appointment));
+        return buildEnrichedResponse(appointmentRepository.save(appointment));
     }
 
     @Override
@@ -152,7 +162,36 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         appointment.setStatus(AppointmentStatus.CANCELLED);
-        return AppointmentMapper.toResponseDTO(appointmentRepository.save(appointment));
+        return buildEnrichedResponse(appointmentRepository.save(appointment));
+    }
+
+    private AppointmentResponseDTO buildEnrichedResponse(Appointment appointment) {
+        AppointmentResponseDTO response = AppointmentMapper.toResponseDTO(appointment);
+
+        patientRepository.findByPatientId_PatientId(response.getPatientId())
+                .ifPresent(patient -> {
+                    response.setPatientFullName(patient.getFullName());
+                    if (patient.getContactInfo() != null) {
+                        response.setPatientEmail(patient.getContactInfo().getEmail());
+                    }
+                });
+
+        doctorRepository.findByDoctorId_DoctorId(response.getDoctorId())
+                .ifPresent(doctor -> {
+                    String fullName = (doctor.getDoctorFirstName() != null ? doctor.getDoctorFirstName() : "")
+                            + " "
+                            + (doctor.getDoctorLastName() != null ? doctor.getDoctorLastName() : "");
+                    response.setDoctorFullName(fullName.trim());
+                });
+
+        clinicRoomRepository.findByRoomId_RoomId(response.getRoomId())
+                .ifPresent(room -> {
+                    response.setRoomName(room.getRoomName());
+                    response.setRoomNumber(room.getRoomNumber());
+                    response.setRoomStatus(room.getRoomStatus() != null ? room.getRoomStatus().name() : null);
+                });
+
+        return response;
     }
 
     private ClinicRoom loadRoom(String roomId) {
