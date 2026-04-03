@@ -1,0 +1,43 @@
+@startuml
+!include C4_Container.puml
+
+title Healthcare Appointment Scheduling System - Container Diagram
+LAYOUT_LEFT_RIGHT()
+
+Person(staff, "Receptionist / Clinic Staff", "Manages bookings and supports patients")
+Person(doctor, "Doctor", "Views appointment schedule")
+Person(patient, "Patient", "Books, cancels, and views appointments")
+
+System_Boundary(hass, "Healthcare Appointment Scheduling System") {
+
+    Container(web, "Web App", "React / HTML-CSS-JS", "Allows users to create, update, cancel, and consult appointments")
+
+    Container(api, "Scheduling API", "Spring Boot", "Exposes REST APIs and coordinates appointment scheduling business rules")
+
+    ContainerDb(db, "Scheduling Database", "MySQL", "Persists appointments and related scheduling information")
+
+    Container(patientRecords, "Patient Records", "Spring Boot / REST", "Stores and provides patient identity, contact, and medical record information")
+
+    Container(doctorDirectory, "Doctor Directory", "Spring Boot / REST", "Stores and provides doctor profiles, specialties, and identifiers")
+
+    Container(clinicAvailability, "Clinic Availability", "Spring Boot / REST", "Stores room and time slot availability information")
+
+    Container(notification, "Notification Service", "Spring Boot / Async", "Sends reminders and confirmations to patients")
+}
+
+Rel(staff, web, "Uses")
+Rel(doctor, web, "Uses")
+Rel(patient, web, "Uses")
+
+Rel(web, api, "Invokes REST API", "HTTPS/JSON")
+
+Rel(api, db, "Reads/Writes", "JPA/SQL")
+Rel(api, patientRecords, "Fetches patient info", "REST")
+Rel(api, doctorDirectory, "Fetches doctor info", "REST")
+Rel(api, clinicAvailability, "Checks slot / room availability", "REST")
+Rel(api, notification, "Triggers notifications", "REST / Async")
+
+Rel(notification, patient, "Sends reminders and confirmations")
+
+SHOW_LEGEND()
+@enduml

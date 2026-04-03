@@ -1,0 +1,17 @@
+@startuml
+!include C4_Context.puml
+
+title C4 Level 1 - Healthcare Appointment Scheduling System
+
+Person(patient, "Patient", "Books, cancels, and views appointments")
+Person(doctor, "Doctor", "Views appointment schedule")
+Person(staff, "Receptionist / Clinic Staff", "Creates and manages appointments")
+
+System(system, "Healthcare Appointment Scheduling System", "Manages appointment booking, cancellation, and scheduling workflows")
+
+Rel(patient, system, "Books / cancels / views appointments")
+Rel(doctor, system, "Views appointment schedule")
+Rel(staff, system, "Creates and manages appointments")
+
+SHOW_LEGEND()
+@enduml
